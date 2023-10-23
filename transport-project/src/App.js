@@ -6,18 +6,18 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Home from "./pages/home";
 
-//components
 
+//components
+import Navbarlanding from "./components/navbarlanding"
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <nav>
-         
-        </nav>
+        <Navbarlanding />
         <Routes>
-        <Route exact path="/" element={<Home/>} />      
+        <Route path="/" element={<Home/>} />  
+          
         </Routes> 
         
       </BrowserRouter>
