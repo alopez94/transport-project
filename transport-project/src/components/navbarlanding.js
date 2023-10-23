@@ -14,7 +14,7 @@ import './navbarlanding.css';
 export default function Navbarlanding() {
   
   return (
-    <Box pb={120}>
+    <Box pb={20}>
       <header className="header">
         <Group justify="space-between" h="100%">
             <Group h="100%" gap={0} visibleFrom="sm">
