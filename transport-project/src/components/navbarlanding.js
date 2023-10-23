@@ -18,15 +18,15 @@ export default function Navbarlanding() {
       <header className="header">
         <Group justify="space-between" h="100%">
             <Group h="100%" gap={0} visibleFrom="sm">
-            <a href="#" className="link">
+            <a href="home" className="link">
               Home
             </a>
             
-            <a href="#" className="link">
-              Learn
+            <a href="about" className="link">
+              Acerca de Nosotros
             </a>
-            <a href="#" className="link">
-              Academy
+            <a href="contact" className="link">
+              Contacto
             </a>
           </Group>
 

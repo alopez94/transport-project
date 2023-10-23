@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 //page components
 
-import Home from "./pages/home";
+import Home from "./pages/Home/home";
 
 
 //components
@@ -16,7 +16,7 @@ function App() {
       <BrowserRouter>
         <Navbarlanding />
         <Routes>
-        <Route path="/" element={<Home/>} />  
+        <Route path="/home" element={<Home/>} />  
           
         </Routes> 
         

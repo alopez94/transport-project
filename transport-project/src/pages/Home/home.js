@@ -1,6 +1,6 @@
 import { Container, Title, Text, Button } from '@mantine/core';
 import './home.css';
-import '../components/navbarlanding'
+
 
 export default function Home() {
   return (
