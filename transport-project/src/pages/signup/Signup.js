@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./Signup.module.css";
 //hooks
 import { useSignup } from "../../hooks/useSignup";
+import {NavLink} from "react-router-dom"
 
 import {
   TextInput,
@@ -36,10 +37,8 @@ export default function Login() {
         Welcome!
       </Title>
       <Text c="dimmed" size="sm" ta="center" mt={5}>
-        Already register, Sign In?{" "}
-        <Anchor size="sm" component="button">
-          Login
-        </Anchor>
+        Already register, {" "}
+        <NavLink to="/login" size="sm" component="button">Sign In?</NavLink>
       </Text>
 
       <Paper withBorder shadow="md" p={30} mt={15} radius="md">
@@ -107,14 +106,18 @@ export default function Login() {
             fullWidth
             mt="xl"
           >
-            Sign in
+            Sign Up
           </Button>
         )}
-        {isPending && <button 
-        fullWidth
-        mt="xl"
-        >loading</button>}
-        {error & <p>{error}</p>}
+        {isPending && (
+          <Button
+            fullWidth
+            mt="xl"
+          >
+            Sign Up
+          </Button>
+        )}
+        {error && <p>{error}</p>}
       </Paper>
     </Container>
   );

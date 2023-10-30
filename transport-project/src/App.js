@@ -1,6 +1,7 @@
 import "./App.css";
 import "@mantine/core/styles.css";
-import { BrowserRouter, Route, Routes, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { useAuthContext } from "./hooks/useAuthContext";
 
 //page components
 
@@ -15,31 +16,32 @@ import Signup from "./pages/signup/Signup";
 import Navbarlanding from "./components/Navbarlanding";
 
 function App() {
+
+  const {authIsReady, user} = useAuthContext()
+
   return (
     <div className="App">
+      {authIsReady && (
       <BrowserRouter>
       <Navbarlanding />
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path="/Dashboard">
-            <Dashboard />
-          </Route>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/contact">
-            <Contact />
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/signup">
-            <Signup />
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path="/" element={ <Home /> } />
+          <Route path="/dashboard" element={(
+            !user ? <Navigate to="/login" /> : <Dashboard />            
+            )} />
+          <Route path="/about" element={<About />            
+            } />
+          <Route path="/contact" element={<Contact />            
+            } />
+          <Route path="/login" element={(
+            user ? <Navigate to="/dashboard" /> : <Login />            
+            )} />
+          <Route path="/signup" element={(
+            !authIsReady ? <Navigate to="/home" /> : <Signup />            
+            )} />
+        </Routes>
       </BrowserRouter>
+      )}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-
+import { useLogin } from '../../hooks/useLogin';
+import {NavLink} from 'react-router-dom'
 
 import {
     TextInput,
@@ -20,10 +21,11 @@ import {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const {login, error, isPending} = useLogin()
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(email, password)
+        login(email, password);
     }
 
     return (
@@ -33,9 +35,7 @@ import {
       </Title>
       <Text c="dimmed" size="sm" ta="center" mt={5}>
         Do not have an account yet?{' '}
-        <Anchor size="sm" component="button">
-          Create account
-        </Anchor>
+        <NavLink to="/signup" size="sm" component="button">Create account</NavLink>
       </Text>
 
       <Paper  withBorder shadow="md" p={30} mt={30} radius="md">
@@ -59,9 +59,12 @@ import {
             Forgot password?
           </Anchor>
         </Group>
-        <Button form='login-form' type='submit' onClick={handleSubmit} fullWidth mt="xl">
+        {!isPending && <Button form='login-form' type='submit' onClick={handleSubmit} fullWidth mt="xl">
           Sign in
-        </Button>
+        </Button>}
+
+        
+        {error && <p>{error}</p>}
       </Paper>
     </Container>
     )
