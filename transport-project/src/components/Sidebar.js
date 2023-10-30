@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Group, Code } from '@mantine/core';
+import { useState } from "react";
+import { Group, Code } from "@mantine/core";
 import {
   IconBellRinging,
   IconFingerprint,
@@ -10,21 +10,28 @@ import {
   IconReceipt2,
   IconSwitchHorizontal,
   IconLogout,
-} from '@tabler/icons-react';
-import './Sidebar.css';
+} from "@tabler/icons-react";
+
+import classes from "./Sidebar.module.css";
+import { useLogout } from "../hooks/useLogout";
 
 const data = [
-  { link: '', label: 'Notifications', icon: IconBellRinging },
-  { link: '', label: 'Billing', icon: IconReceipt2 },
-  { link: '', label: 'Security', icon: IconFingerprint },
+  { link: "", label: "Notifications", icon: IconBellRinging },
+  { link: "", label: "Billing", icon: IconReceipt2 },
+  { link: "", label: "Security", icon: IconFingerprint },
+  { link: "", label: "SSH Keys", icon: IconKey },
+  { link: "", label: "Databases", icon: IconDatabaseImport },
+  { link: "", label: "Authentication", icon: Icon2fa },
+  { link: "", label: "Other Settings", icon: IconSettings },
 ];
 
 export function Sidebar() {
-  const [active, setActive] = useState('Billing');
+  const [active, setActive] = useState("Billing");
+  const {logout} = useLogout();
 
   const links = data.map((item) => (
     <a
-      className="link"
+      className={classes.link}
       data-active={item.label === active || undefined}
       href={item.link}
       key={item.label}
@@ -33,27 +40,37 @@ export function Sidebar() {
         setActive(item.label);
       }}
     >
-      <item.icon className="linkIcon" stroke={5} />
+      <item.icon className={classes.linkIcon} stroke={1.5} />
       <span>{item.label}</span>
     </a>
   ));
 
   return (
-    <nav className="navbar">
-      <div className="navbarMain">
-        <Group className="header" justify="space-between">
-         
-          <Code fw={10} className="version">
-            v3.1.2
-          </Code>
+    <nav className={classes.navbar}>
+      <div className={classes.navbarMain}>
+        <Group className={classes.header} justify="space-between">
+        
+          
         </Group>
         {links}
       </div>
 
-      <div className="footer">
-       
-        <a href="#" className="link" onClick={(event) => event.preventDefault()}>
-          <IconLogout className="linkIcon" stroke={1} />
+      <div className={classes.footer}>
+        <a
+          href="#"
+          className={classes.link}
+          onClick={(event) => event.preventDefault()}
+        >
+          <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
+          <span>Change account</span>
+        </a>
+
+        <a
+          href="#"
+          className={classes.link}
+          onClick={(logout)}
+        >
+          <IconLogout className={classes.linkIcon} stroke={1.5} />
           <span>Logout</span>
         </a>
       </div>
