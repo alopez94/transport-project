@@ -8,6 +8,8 @@ import Home from "./pages/Home/Home";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Contact from "./pages/contact/Contact";
 import About from "./pages/about/About";
+import Login from "./pages/login/Login";
+import Signup from "./pages/signup/Signup";
 
 //components
 import Navbarlanding from "./components/Navbarlanding";
@@ -16,6 +18,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
+      <Navbarlanding />
         <Switch>
           <Route exact path="/">
             <Home />
@@ -28,6 +31,12 @@ function App() {
           </Route>
           <Route path="/contact">
             <Contact />
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/signup">
+            <Signup />
           </Route>
         </Switch>
       </BrowserRouter>

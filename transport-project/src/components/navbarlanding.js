@@ -8,13 +8,13 @@ import {
 } from '@mantine/core';
 
 
-import './Navbarlanding.css';
+import './Navbarlanding.modules.css';
 
 export default function Navbarlanding() {
   
   return (
     <Box pb={20}>
-      <header className="header">
+      <header className={"header"}>
         <Group justify="space-between" h="100%">
             <Group h="100%" gap={0} visibleFrom="sm">
             <a href="/" className="link">
@@ -45,8 +45,8 @@ export default function Navbarlanding() {
           
 
           <Group justify="center" grow pb="xl" px="md">
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
+            <Button variant="default" href="login">Log in</Button>
+            <Button href="signup">Sign up</Button>
           </Group>
         </ScrollArea>
       </Drawer>
