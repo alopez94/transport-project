@@ -5,7 +5,7 @@ import { useAuthContext } from "./hooks/useAuthContext";
 
 //page components
 
-import Home from "./pages/Home/Home";
+import Home from "./pages/Home/home";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Contact from "./pages/contact/Contact";
 import About from "./pages/about/About";
@@ -13,7 +13,7 @@ import Login from "./pages/login/Login";
 import Signup from "./pages/signup/Signup";
 
 //components
-import Navbarlanding from "./components/Navbarlanding";
+import Navbarlanding from "./components/navbarlanding";
 
 function App() {
 
