@@ -13,6 +13,7 @@ import {
 } from "@tabler/icons-react";
 
 import classes from "./Sidebar.module.css";
+import { useLogout } from "../hooks/useLogout";
 
 const data = [
   { link: "", label: "Notifications", icon: IconBellRinging },
@@ -26,6 +27,7 @@ const data = [
 
 export function Sidebar() {
   const [active, setActive] = useState("Billing");
+  const {logout} = useLogout();
 
   const links = data.map((item) => (
     <a
@@ -48,7 +50,7 @@ export function Sidebar() {
       <div className={classes.navbarMain}>
         <Group className={classes.header} justify="space-between">
         
-          <Code fw={700}>v3.1.2</Code>
+          
         </Group>
         {links}
       </div>
@@ -66,7 +68,7 @@ export function Sidebar() {
         <a
           href="#"
           className={classes.link}
-          onClick={(event) => event.preventDefault()}
+          onClick={(logout)}
         >
           <IconLogout className={classes.linkIcon} stroke={1.5} />
           <span>Logout</span>
