@@ -1,0 +1,76 @@
+{
+  "user": [
+    {
+      "id": "1",
+      "name": "James",
+      "lastName": "Webber",
+      "email": "jamesw@nasa.gov",
+      "idAddress": 1,
+      "phone": "4561237894",
+      "idCompany": 1,
+      "password": "abc123**",
+      "usertype": 1,
+      "isadmin": 0,
+      "isDriver": 0,
+      "drivingSkills": [
+        {
+          "type1": "Liviano",
+          "type2": "Pesado"
+        }
+      ]
+    }
+  ],
+  "vehicule": [
+    {
+      "id": "1",
+      "brand":"Toyota",
+      "type":"Carga Pesada",
+      "info":"Este veiculo puede ayudarllos a transportar",
+      "maxcapacitu": 2000,
+      "maxspeed":110,
+      "transmition":"Manual",
+      "rentprisebase":1200.00,
+      "driverrequired":"Licencia Pesada-Articulada",
+      "isAvailable":1,
+      "daysAvailable":[
+        {
+          
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "brand":"Toyota",
+      "type":"Carga Pesada",
+      "info":"Este veiculo puede ayudarllos a transportar",
+      "maxcapacitu": 2000,
+      "maxspeed":110,
+      "transmition":"Manual",
+      "rentprisebase":1200.00,
+      "driverrequired":"Licencia Pesada-Articulada",
+      "isAvailable":1,
+      "daysAvailable":[
+        {
+          
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "brand":"Toyota",
+      "type":"Carga Pesada",
+      "info":"Este veiculo puede ayudarllos a transportar",
+      "maxcapacitu": 2000,
+      "maxspeed":110,
+      "transmition":"Manual",
+      "rentprisebase":1200.00,
+      "driverrequired":"Licencia Pesada-Articulada",
+      "isAvailable":1,
+      "daysAvailable":[
+        {
+          
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 .navbar {
-    height: rem(700px);
-    width: rem(300px);
+    height: rem(50);
+    width: rem(75);
     padding: var(--mantine-spacing-md);
     display: flex;
     flex-direction: column;
@@ -8,7 +8,7 @@
   }
   
   .navbarMain {
-    flex: 1;
+    flex: 2;
   }
   
   .header {

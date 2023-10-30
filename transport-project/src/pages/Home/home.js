@@ -1,5 +1,5 @@
 import { Container, Title, Text, Button } from '@mantine/core';
-import './Home.css';
+import './Home.module.css';
 
 
 export default function Home() {

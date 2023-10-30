@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { MantineProvider, createTheme } from '@mantine/core';
+import { AuthContextProvider } from './context/AuthContext';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -12,10 +13,12 @@ const theme = createTheme({
 });
 
 root.render(
-  <React.StrictMode>
+  <React.StrictMode>  
+   <AuthContextProvider>
    <MantineProvider theme={theme}>
     <App />
     </MantineProvider>
+    </AuthContextProvider>
   </React.StrictMode>
 );
 
