@@ -2,22 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import { MantineProvider, createTheme } from '@mantine/core';
+
 import { AuthContextProvider } from './context/AuthContext';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-const theme = createTheme({
-  /** Put your mantine theme override here */
-});
-
 root.render(
   <React.StrictMode>  
-   <AuthContextProvider>
-   <MantineProvider theme={theme}>
-    <App />
-    </MantineProvider>
+   <AuthContextProvider>   
+    <App />    
     </AuthContextProvider>
   </React.StrictMode>
 );

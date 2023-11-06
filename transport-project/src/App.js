@@ -1,5 +1,4 @@
 import "./App.css";
-import "@mantine/core/styles.css";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
 
@@ -13,7 +12,7 @@ import Login from "./pages/login/Login";
 import Signup from "./pages/signup/Signup";
 
 //components
-import Navbarlanding from "./components/navbarlanding";
+import Navbarlanding from "./components/Navbarlanding";
 
 function App() {
 
