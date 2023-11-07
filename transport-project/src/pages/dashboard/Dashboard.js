@@ -1,5 +1,6 @@
 import React from 'react'
 
+import './Dashboard.css'
 
 export default function Dashboard() {
   
@@ -7,7 +8,7 @@ export default function Dashboard() {
     <div> 
       
       
-                   
+          DAshboard         
     
     </div>
   )

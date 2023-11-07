@@ -19,6 +19,7 @@ const firebaseConfig = {
   //
   const projectFirestore = firebase.firestore()
   const projectAuthentication = firebase.auth()
+  
 
   //timestamp
 

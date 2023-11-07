@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useLogin } from '../../hooks/useLogin';
-import {NavLink} from 'react-router-dom'
 import * as React from 'react';
 
 //Styles
@@ -19,20 +18,9 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
-import './Login.module.css'
+import './Login.css'
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+
 
 const defaultTheme = createTheme();
 
@@ -48,7 +36,8 @@ const defaultTheme = createTheme();
     }
 
     return (
-      <ThemeProvider theme={defaultTheme}>
+      <div className='breakdown'>
+      <ThemeProvider theme={defaultTheme} >
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -116,9 +105,10 @@ const defaultTheme = createTheme();
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+       
       </Container>
     </ThemeProvider>
+    </div>
     )
   }
   

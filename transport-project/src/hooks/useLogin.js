@@ -16,7 +16,7 @@ export const useLogin = () => {
 
     try {
       const res = await projectAuthentication.signInWithEmailAndPassword(email, password)
-
+      
       // dispatch login
 
       dispatch({ type: "LOGIN", payload: res.user });

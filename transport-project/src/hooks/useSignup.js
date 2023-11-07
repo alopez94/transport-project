@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { projectAuthentication } from "../firebase/config";
+import { projectAuthentication, projectFirestore } from "../firebase/config";
 import { useAuthContext } from "./useAuthContext";
+import {} from "firebase/firestore"
 
 export const useSignup = () => {
   const [isCancelled, setIsCancelled] = useState(false);
@@ -8,13 +9,13 @@ export const useSignup = () => {
   const [isPending, setIsPending] = useState(false);
   const { dispatch } = useAuthContext();
 
-  const signup = async (name, lastName, phone, company, email, password) => {
+  const signup = async (name, lastName, phone, company, displayName, email, password) => {
     setError(null);
     setIsPending(true);
 
     try {
       //signupuser
-      const response =
+        const response =
         await projectAuthentication.createUserWithEmailAndPassword(
           email,
           password
@@ -25,7 +26,17 @@ export const useSignup = () => {
       }
 
       //add user info
-      await response.user.updateProfile({ name, lastName, phone, company });
+      await response.user.updateProfile({ displayName });
+
+      //create a user document 
+      await projectFirestore.collection('users').doc(response.user.uid).set({
+        name,
+        lastName,
+        phone,
+        company,
+        displayName,
+        isAdmin: false
+      })
 
       //dispatch login action
       dispatch({ type: "LOGIN", payload: response.user });

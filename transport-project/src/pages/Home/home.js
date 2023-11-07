@@ -1,5 +1,5 @@
 
-import './Home.module.css';
+import './Home.css';
 
 
 export default function Home() {

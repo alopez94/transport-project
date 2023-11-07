@@ -1,8 +1,7 @@
 import { useState } from "react";
-import "./Signup.module.css";
+import "./Signup.css";
 //hooks
 import { useSignup } from "../../hooks/useSignup";
-import {NavLink} from "react-router-dom"
 
 
 //Styles
@@ -10,8 +9,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';  
 import Box from '@mui/material/Box';
@@ -46,8 +43,9 @@ export default function Login() {
   const {signup, isPending, error} = useSignup();
 
   const handleSubmit = (e) => {
+    var displayName = name;
     e.preventDefault();
-    signup(name, lastName, phone, company, email, password);
+    signup(name, lastName, phone, company, displayName, email, password);
   };
 
   return (

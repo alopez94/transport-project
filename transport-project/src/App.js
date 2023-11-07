@@ -10,9 +10,12 @@ import Contact from "./pages/contact/Contact";
 import About from "./pages/about/About";
 import Login from "./pages/login/Login";
 import Signup from "./pages/signup/Signup";
+import Admin from "./pages/admin/Admin";
 
 //components
 import Navbarlanding from "./components/Navbarlanding";
+import Sidebar from "./components/Sidebar";
+
 
 function App() {
 
@@ -22,6 +25,9 @@ function App() {
     <div className="App">
       {authIsReady && (
       <BrowserRouter>
+      {user && <Sidebar />}
+
+      <div className="container">
       <Navbarlanding />
         <Routes>
           <Route path="/home" element={ <Home /> } />
@@ -35,10 +41,14 @@ function App() {
           <Route path="/login" element={(
             user ? <Navigate to="/dashboard" /> : <Login />            
             )} />
+            <Route path="/admin" element={(
+            !user ? <Navigate to="/login" /> : <Admin />            
+            )} />
           <Route path="/signup" element={(
-            !authIsReady ? <Navigate to="/home" /> : <Signup />            
+            !authIsReady || user ? <Navigate to="/dashboard" /> : <Signup />            
             )} />
         </Routes>
+        </div>
       </BrowserRouter>
       )}
     </div>
