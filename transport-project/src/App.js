@@ -1,6 +1,8 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
+import { projectAuthentication, projectFirestore } from "./firebase/config";
+import { useState } from "react";
 
 //page components
 
@@ -20,6 +22,7 @@ import Sidebar from "./components/Sidebar";
 function App() {
 
   const {authIsReady, user} = useAuthContext()
+  
 
   return (
     <div className="App">
@@ -42,7 +45,7 @@ function App() {
             user ? <Navigate to="/dashboard" /> : <Login />            
             )} />
             <Route path="/admin" element={(
-            !user ? <Navigate to="/login" /> : <Admin />            
+            !user  ? <Navigate to="/login" /> : <Admin />            
             )} />
           <Route path="/signup" element={(
             !authIsReady || user ? <Navigate to="/dashboard" /> : <Signup />            
