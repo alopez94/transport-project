@@ -17,7 +17,7 @@ import Admin from "./pages/admin/Admin";
 //components
 import Navbarlanding from "./components/Navbarlanding";
 import Sidebar from "./components/Sidebar";
-
+import AdminRoute from "./context/AdminRoute";
 
 function App() {
 
@@ -44,9 +44,11 @@ function App() {
           <Route path="/login" element={(
             user ? <Navigate to="/dashboard" /> : <Login />            
             )} />
-            <Route path="/admin" element={(
-            !user  ? <Navigate to="/login" /> : <Admin />            
-            )} />
+          
+          <Route element={<AdminRoute />}>
+          <Route path="/admin" element={!authIsReady && <Admin />} />
+        </Route>
+
           <Route path="/signup" element={(
             !authIsReady || user ? <Navigate to="/dashboard" /> : <Signup />            
             )} />
