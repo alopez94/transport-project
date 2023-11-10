@@ -46,7 +46,7 @@ function App() {
             )} />
           
           <Route element={<AdminRoute />}>
-          <Route path="/admin" element={!authIsReady && <Admin />} />
+          <Route path="/admin" element={user && <Admin />} />
         </Route>
 
           <Route path="/signup" element={(
