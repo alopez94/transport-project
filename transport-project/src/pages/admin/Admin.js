@@ -6,6 +6,21 @@ import { addVehicle, updateVehicle, deleteVehicle } from '../../firebase/vehicle
 import TransportUnitForm from '../../components/transport/transportUnitForm';
 import TransportUnitList from '../../components/transport/transportUnitList';
 
+const useFirestoreCollection = (collectionName, setData) => {
+  useEffect(() => {
+    const unsubscribe = projectFirestore.collection(collectionName).onSnapshot(snapshot => {
+      const data = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setData(data);
+    });
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, [collectionName, setData]);
+};
+
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -52,36 +67,44 @@ export default function Admin() {
     isAvailable: false,
     daysAvailable: []
   };
-  
+  const initialDriverState = {
+    name: '',
+    lastname: '',
+    dni: '',
+    email: '',
+    cellphone: '',
+    address: '',
+    age: 0,
+    isactive: true,
+  };
+
   const [value, setValue] = useState(0);
   const [vehicles, setVehicles] = useState([]); // This should hold the list of vehicles
   const [vehicle, setVehicle] = useState(initialVehicleState); // This should be an object
   const [editingVehicle, setEditingVehicle] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [drivers, setDrivers] = useState([]); // This should hold the list of drivers
+  const [driver, setDriver] = useState(initialDriverState); // This should be an object
+  const [editingdriver, setEditingDriver] = useState(null);
+  //const [isEditing, setIsEditing] = useState(false);
 
   const resetForm = () => {
     setVehicle(initialVehicleState); 
     setIsEditing(false);             
-    setEditingVehicle(null);         
+    setEditingVehicle(null);    
+    setDriver(initialDriverState);  
+    setEditingDriver(null);   
   };
   
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  useEffect(() => {
-    // Subscribe to real-time updates
-    const unsubscribe = projectFirestore.collection('vehicles').onSnapshot(snapshot => {
-      const vehiclesArray = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setVehicles(vehiclesArray); // This should be setVehicles, not setVehicle
-    });
-  
-    // Cleanup subscription on unmount
-    return () => unsubscribe();
-  }, []);
+ // Use the custom hook for vehicles
+  useFirestoreCollection('vehicles', setVehicles);
+
+ // Use the custom hook for drivers
+  useFirestoreCollection('drivers', setDrivers);
 
   const resetEditing = () => {
     setEditingVehicle(null);
