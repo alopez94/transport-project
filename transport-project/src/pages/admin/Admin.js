@@ -5,6 +5,9 @@ import { Box, Tabs, Tab, Typography } from '@mui/material';
 import { addVehicle, updateVehicle, deleteVehicle } from '../../firebase/vehicles';
 import TransportUnitForm from '../../components/transport/transportUnitForm';
 import TransportUnitList from '../../components/transport/transportUnitList';
+import DriverUnitForm from '../../components/drivers/DriverUnitForm';
+import DriverUnitList from '../../components/drivers/DriverUnitList';
+import { addDriver, updateDriver, deleteDriver } from '../../firebase/Drivers';
 
 const useFirestoreCollection = (collectionName, setData) => {
   useEffect(() => {
@@ -89,28 +92,30 @@ export default function Admin() {
   //const [isEditing, setIsEditing] = useState(false);
 
   const resetForm = () => {
-    setVehicle(initialVehicleState); 
-    setIsEditing(false);             
-    setEditingVehicle(null);    
-    setDriver(initialDriverState);  
-    setEditingDriver(null);   
+    setVehicle(initialVehicleState);
+    setIsEditing(false);
+    setEditingVehicle(null);
+    setDriver(initialDriverState);
+    setEditingDriver(null);
   };
-  
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
- // Use the custom hook for vehicles
+  // Use the custom hook for vehicles
   useFirestoreCollection('vehicles', setVehicles);
 
- // Use the custom hook for drivers
+  // Use the custom hook for drivers
   useFirestoreCollection('drivers', setDrivers);
 
   const resetEditing = () => {
     setEditingVehicle(null);
+    setEditingDriver(null);
     setIsEditing(false); // Reset the editing state when the form is submitted or cancelled
   };
 
+  // #region Crud Vehiculos
   const handleSaveVehicle = async (vehicleToSave) => {
     try {
       if (isEditing) {
@@ -124,17 +129,68 @@ export default function Admin() {
       // Handle the error accordingly
     }
   };
-  
-    const handleEditVehicle = (vehicle) => {
-      setEditingVehicle(vehicle);
-      setIsEditing(true); // Set isEditing to true when editing
-    };
-  
-    const handleDeleteVehicle = async (id) => {
-      await deleteVehicle(id);
-    };
-  
 
+  const handleEditVehicle = (vehicle) => {
+    setEditingVehicle(vehicle);
+    setIsEditing(true); // Set isEditing to true when editing
+  };
+
+  const handleDeleteVehicle = async (id) => {
+    await deleteVehicle(id);
+  };
+  //  #endregion
+
+  // #region Crud Drivers
+  const handleSaveDrive = async (driverToSave) => {
+    try {
+      if (
+        !driverToSave.name ||
+        !driverToSave.lastname ||
+        !driverToSave.dni ||
+        !driverToSave.email ||
+        !driverToSave.cellphone ||
+        !driverToSave.address
+      ) {
+        throw new Error("Todos los campos deben ser completados.");
+      }
+      if (!/^\d{8}$/.test(driverToSave.cellphone)) {
+        throw new Error("El número de teléfono debe contener 8 números.");
+      }
+
+      if (!/^\d{13}$/.test(driverToSave.dni)) {
+        throw new Error("El número de identidad no es valido.");
+      }
+
+      // Validación de formato de correo electrónico
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(driverToSave.email)) {
+        throw new Error("El formato del correo electrónico no es válido.");
+      }
+
+      if (isEditing) {
+        await updateDriver(editingdriver.id, driverToSave);
+        console.log(editingdriver.id)
+      } else {
+        await addDriver(driverToSave);
+      }
+      console.log(driverToSave)
+      resetForm()// Reset form after save
+    } catch (error) {
+      console.error("Error saving document: ", error);
+      window.alert(error.message);
+      // Handle the error accordingly
+    }
+  };
+
+  const handleEditDriver = (driver) => {
+    setEditingDriver(driver);
+    setIsEditing(true); // Set isEditing to true when editing
+  };
+
+  const handleDeleteDriver = async (id) => {
+    await updateDriver(id, { isactive: false });
+  };
+  // #endregion
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -144,8 +200,19 @@ export default function Admin() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        {/* Content for Transportistas */}
-        Transportistas
+        {/* CRUD components for Unidades */}
+        <DriverUnitForm
+          existingDriver={editingdriver}
+          driver={driver}
+          setDriver={setDriver}
+          onSave={handleSaveDrive}
+          isEditing={isEditing}
+        />
+        <DriverUnitList
+          drivers={drivers}
+          onEdit={handleEditDriver}
+          onDelete={handleDeleteDriver}
+        />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         {/* CRUD components for Unidades */}
