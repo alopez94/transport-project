@@ -10,8 +10,9 @@ import Typography from '@mui/material/Typography';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
-const DriverUnitForm = ({ existingDriver, onSave }) => {
-  const [driver, setDriver] = useState({
+const DriverUnitForm = ({ existingDriver, onSave,onReset }) => {
+  
+  const initialDriverState = {
     name: '',
     lastname: '',
     dni: '',
@@ -20,13 +21,20 @@ const DriverUnitForm = ({ existingDriver, onSave }) => {
     address: '',
     age: 0,
     isactive: true,
-  });
+  };
+
+  const [driver, setDriver] = useState(initialDriverState);
+
 
   useEffect(() => {
     if (existingDriver) {
         setDriver(existingDriver);
     }
   }, [existingDriver]);
+
+  const resetForm = () => {
+    setDriver(initialDriverState);
+  }	  
 
   const handleChange = (e) => {
     const { name, value, checked, type } = e.target;
@@ -40,6 +48,7 @@ const DriverUnitForm = ({ existingDriver, onSave }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave(driver);
+    resetForm();
   };
 
   const isEditing = Boolean(existingDriver);

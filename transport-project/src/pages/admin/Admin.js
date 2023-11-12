@@ -94,6 +94,30 @@ export default function Admin() {
 
   const handleSaveDrive = async (driverToSave) => {
     try {
+      if(
+        !driverToSave.name ||
+        !driverToSave.lastname ||
+        !driverToSave.dni ||
+        !driverToSave.email ||
+        !driverToSave.cellphone ||
+        !driverToSave.address 
+      ) {
+        throw new Error("Todos los campos deben ser completados.");
+      }
+      if (!/^\d{8}$/.test(driverToSave.cellphone)) {
+        throw new Error("El número de teléfono debe contener 8 números.");
+      }
+
+      if (!/^\d{13}$/.test(driverToSave.dni)) {
+        throw new Error("El número de identidad no es valido.");
+      }
+
+      // Validación de formato de correo electrónico
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(driverToSave.email)) {
+        throw new Error("El formato del correo electrónico no es válido.");
+      }
+
       if (isEditing) {
         await updateDriver(editingdriver.id, driverToSave);
         console.log(editingdriver.id)
@@ -104,6 +128,7 @@ export default function Admin() {
       resetForm()// Reset form after save
     } catch (error) {
       console.error("Error saving document: ", error);
+      window.alert(error.message);
       // Handle the error accordingly
     }
   };
