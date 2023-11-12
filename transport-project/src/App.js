@@ -15,7 +15,7 @@ import Signup from "./pages/signup/Signup";
 import Admin from "./pages/admin/Admin";
 
 //components
-import Navbarlanding from "./components/Navbarlanding";
+import Navbarlanding from "./components/navbarlanding";
 import Sidebar from "./components/Sidebar";
 import AdminRoute from "./context/AdminRoute";
 
