@@ -1,0 +1,108 @@
+/* Home.css */
+
+.slideshow-container {
+    max-width: 80%; /* Adjust the maximum width as needed */
+    margin: 0 auto; /* Center the slideshow */
+    float: right;
+    background-color: #e5f7ee; /* Float the slideshow to the left */
+  }
+  
+  /* Update the styles for the slides to reduce the image size and move to the left */
+  .slide {
+    display: none;
+    width: 80%; /* Adjust the width of the slide as needed */
+    transition: opacity 3s ease-in-out; /* Smooth transition effect */
+    border-radius: 15px;
+    overflow: hidden; 
+  }
+  
+  .active {
+    display: block;
+    opacity: 1;
+  }
+  
+  img {
+    width: 100%; /* Make the image fill the slide container */
+    height: auto;
+  }
+  
+  .webpage-description {
+    margin-top: 20px; /* Add margin to separate the slideshow from the description */
+    margin-left: 20px; /* Add margin to the left side of the description */
+  }
+  header {
+    background-color: #2ecc71; /* Add a harder green background color to the headers */
+    padding: 10px; /* Add padding for better visibility */
+  }
+  
+  header h1, header h2 {
+    color: #fff; /* Set text color to white for better contrast */
+    margin: 10%; /* Remove default margin */
+  }
+  /* Home.css */
+
+.slideshow-container {
+    position: relative;
+  }
+  
+  .slogan-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white; /* Change to white */
+    background-color: rgba(169, 169, 169, 0.7); /* Semi-transparent gray background */
+  padding: 10px; 
+  }
+  
+  .slogan-text {
+    font-size: 36px; /* Increase the font size */
+    font-weight: bold;
+  }
+  
+  .webpage-description {
+    margin-top: 20px; /* Add margin to create space between header and paragraph */
+  }
+  
+  .webpage-description h2 {
+    margin-bottom: 30px; /* Adjust the margin-bottom of h2 as needed */
+  }
+
+  /* Home.css */
+
+/* ... (existing styles) */
+
+.second-description {
+    margin-top: 300px; /* Adjust the margin-top as needed */
+  }
+  
+  .second-description button {
+    background-color: #2ecc71; /* Green button color */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .second-description button:hover {
+    background-color: #27ae60; /* Darker green color on hover */
+  }
+  /* Home.css */
+
+/* ... (existing styles) */
+
+.second-description {
+    margin-bottom: 20px; /* Add margin at the bottom of the second description */
+  }
+  
+  .image-container {
+    margin-top: 20px; /* Add margin at the top of the image container */
+  }
+  
+  .image-container img {
+    max-width: 50%; /* Ensure the image doesn't exceed its container */
+    height: auto; /* Maintain the image's aspect ratio */
+  }
+  
