@@ -6,7 +6,7 @@ import { useState } from "react";
 
 //page components
 
-import Home from "./pages/Home/home";
+import Home from "./pages/Home/Home";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Contact from "./pages/contact/Contact";
 import About from "./pages/about/About";
@@ -17,7 +17,7 @@ import Tracking from "./pages/tracking/Tracking";
 import MyTrips from "./pages/mytrips/MyTrips";
 
 //components
-import Navbarlanding from "./components/Navbarlanding";
+import Navbarlanding from "./components/navbarlanding";
 import Sidebar from "./components/Sidebar";
 import AdminRoute from "./context/AdminRoute";
 
