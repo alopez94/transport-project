@@ -17,7 +17,7 @@ import Tracking from "./pages/tracking/Tracking";
 import MyTrips from "./pages/mytrips/MyTrips";
 
 //components
-import Navbarlanding from "./components/Navbarlanding";
+import Navbarlanding from "./components/navbarlanding";
 import Sidebar from "./components/Sidebar";
 import AdminRoute from "./context/AdminRoute";
 
