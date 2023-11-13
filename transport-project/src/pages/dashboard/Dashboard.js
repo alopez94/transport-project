@@ -8,7 +8,7 @@ export default function Dashboard() {
   return (
     <div> 
            
-          DAshboard         
+          Dashboard         
     
     </div>
   )
