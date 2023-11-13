@@ -13,9 +13,11 @@ import About from "./pages/about/About";
 import Login from "./pages/login/Login";
 import Signup from "./pages/signup/Signup";
 import Admin from "./pages/admin/Admin";
+import Tracking from "./pages/tracking/Tracking";
+import MyTrips from "./pages/mytrips/MyTrips";
 
 //components
-import Navbarlanding from "./components/navbarlanding";
+import Navbarlanding from "./components/Navbarlanding";
 import Sidebar from "./components/Sidebar";
 import AdminRoute from "./context/AdminRoute";
 
@@ -34,8 +36,15 @@ function App() {
       <Navbarlanding />
         <Routes>
           <Route path="/home" element={ <Home /> } />
+          
           <Route path="/dashboard" element={(
             !user ? <Navigate to="/login" /> : <Dashboard />            
+            )} />
+          <Route path="/mytrips" element={(
+            !user ? <Navigate to="/login" /> : <MyTrips />            
+            )} />
+            <Route path="/tracking" element={(
+            !user ? <Navigate to="/login" /> : <Tracking />            
             )} />
           <Route path="/about" element={<About />            
             } />

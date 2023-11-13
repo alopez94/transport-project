@@ -46,6 +46,16 @@ export default function Sidebar() {
             </NavLink>
           </li>
           <li>
+            <NavLink exact to="/mytrips">
+              <span>Mis viajes</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink exact to="/tracking">
+              <span>Tracking</span>
+            </NavLink>
+          </li>
+          <li>
             {isAdmin && <NavLink to="/admin">              
               <span>Admin</span>
             </NavLink>}
