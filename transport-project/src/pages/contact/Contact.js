@@ -32,7 +32,7 @@ export default function Contact() {
         <h2>Póngase en contacto con nosotros</h2>
         <p>Complete el formulario a la izquierda y descubra cómo podemos ayudarlo a hacer crecer su negocio.</p>
 
-        {/* Contact form */}
+        
         <form onSubmit={handleSubmit}>
           <label>
             Name:
