@@ -6,7 +6,7 @@ import { useState } from "react";
 
 //page components
 
-import Home from "./pages/Home/Home";
+import Home from "./pages/Home/home"
 import Dashboard from "./pages/dashboard/Dashboard";
 import Contact from "./pages/contact/Contact";
 import About from "./pages/about/About";
