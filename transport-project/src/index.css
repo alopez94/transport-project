@@ -47,14 +47,14 @@ ul {
 /* forms */
 label {
   display: block;
-  margin: 1px auto;
+  margin: 0.5px auto;
 }
 label span {
-  display: block;
+  
   margin-bottom: 1px;
 }
 input, textarea {
-  padding: 2px 2px;
+  padding: 1px 1px;
   font-size: 1em;
   color: #777;
   width: 100%;

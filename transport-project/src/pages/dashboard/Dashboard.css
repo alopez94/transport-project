@@ -1,0 +1,31 @@
+.containersection {
+    display:flexbox;
+    border-radius: 1px;
+    padding: 10%;
+    flex-grow: 1;
+    padding: 0 60px;
+    
+    
+}
+
+.card {
+display: flex;
+
+}
+
+.cardsContainer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns */
+    grid-gap: 20px; /* Space between cards */
+    padding: 20px; /* Padding around the grid */
+}
+
+.card {
+    /* Styles for individual cards */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Optional: Adds shadow for depth */
+    transition: 0.3s; /* Optional: Adds a transition effect on hover */
+  }
+  .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2); /* Optional: Change shadow on hover */
+  }
+  

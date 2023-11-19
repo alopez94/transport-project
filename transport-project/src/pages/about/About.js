@@ -1,7 +1,7 @@
 // AboutUs.js
 
 import React from 'react';
-import './About.module.css';
+import './About.css';
 
 export default function AboutUs() {
   return (
@@ -28,7 +28,7 @@ export default function AboutUs() {
         <div className="swift-moves-description">
           <h3>¿Qué es Swift Moves?</h3>
           <p>
-            Swift Moves es una plataforma dedicada a facilitar y mejorar su experiencia de mudanza. 
+            Swift Moves es una plataforma dedicada a facilitar y mejorar su experiencia de transporte de carga. 
             Con un enfoque en el servicio al cliente, la innovación y la colaboración, nos esforzamos 
             por brindar soluciones eficientes y creativas para satisfacer sus necesidades de mudanza.
             En Swift Moves, consideramos a nuestros clientes como parte de nuestra familia, y trabajamos 
@@ -45,7 +45,9 @@ export default function AboutUs() {
           <div className="about-definition">
             <h3>Qué nos define</h3>
           </div>
-
+            <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce mollis sem quis lorem sodales, eget dictum velit scelerisque. Proin nulla eros, elementum a augue in, pharetra accumsan ex. Sed scelerisque turpis sed lectus aliquam placerat. Nam luctus ornare nisl. Praesent at aliquam massa. Morbi ut ullamcorper felis, sed viverra lectus.
+            </p>
           {/* Table for Service, Innovación, Alianzas, Fuerza, Familia, Community */}
           <div className="about-table">
             <table>

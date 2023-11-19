@@ -32,6 +32,7 @@ const TransportUnitList = ({ vehicles, onEdit, onDelete }) => {
           <TableCell>Precio Base</TableCell>
           <TableCell>Conductor Requerido</TableCell>
           <TableCell>Disponible</TableCell>
+          <TableCell>Imagen</TableCell>
           <TableCell>Días Disponibles</TableCell>
           <TableCell>Acciones</TableCell>
         </TableRow>
@@ -48,6 +49,7 @@ const TransportUnitList = ({ vehicles, onEdit, onDelete }) => {
             <TableCell>{vehicle.rentpricebase}</TableCell>
             <TableCell>{vehicle.driverrequired}</TableCell>
             <TableCell>{vehicle.isAvailable ? 'Sí' : 'No'}</TableCell>
+            <TableCell>{vehicle.image}</TableCell>
             <TableCell>{getDaysAvailableNumbers(vehicle.daysAvailable)}</TableCell>
             <TableCell>
               <Button variant="contained" color="primary" onClick={() => onEdit(vehicle)}>

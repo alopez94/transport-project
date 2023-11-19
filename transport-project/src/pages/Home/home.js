@@ -35,14 +35,14 @@ export default function Home() {
       <div className="webpage-description">
         <h2>Bienvenido a Swift Moves!</h2>
         <p>
-        Encuentre la solución perfecta para su mudanza con nuestras opciones de alquiler de camiones
+        Encuentre la solución perfecta para su tus transportes con nuestras opciones de alquiler de camiones
          y servicios de conductores profesionales.</p>
       </div>
 
      {/* Include the second description without a card */}
      <div className="second-description">
-        <h2>Su mudanza perfecta comienza con Swift Moves.</h2>
-        <p>Explore soluciones eficientes para su mudanza con solo un clic de distancia.</p>
+        <h2>Su carga comienza con Swift Moves.</h2>
+        <p>Explore soluciones eficientes para su carga con solo un clic de distancia.</p>
         <button className="green-button" onClick={() => window.location.href='/contact'}>
           Contact Us
         </button>

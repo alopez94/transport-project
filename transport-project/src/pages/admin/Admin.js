@@ -59,6 +59,7 @@ function a11yProps(index) {
 
 export default function Admin() {
   const initialVehicleState = {
+    createdby: '',
     brand: '',
     type: '',
     info: '',
@@ -67,6 +68,7 @@ export default function Admin() {
     transmission: '',
     rentpricebase: 0,
     driverrequired: '',
+    image: '',
     isAvailable: false,
     daysAvailable: []
   };
@@ -89,7 +91,10 @@ export default function Admin() {
   const [drivers, setDrivers] = useState([]); // This should hold the list of drivers
   const [driver, setDriver] = useState(initialDriverState); // This should be an object
   const [editingdriver, setEditingDriver] = useState(null);
+  const [vehicleSavedID, setVehicleSavedID] = useState();
   //const [isEditing, setIsEditing] = useState(false);
+
+ 
 
   const resetForm = () => {
     setVehicle(initialVehicleState);
@@ -120,8 +125,12 @@ export default function Admin() {
     try {
       if (isEditing) {
         await updateVehicle(editingVehicle.id, vehicleToSave);
+       
       } else {
-        await addVehicle(vehicleToSave);
+      const docRef = await addVehicle(vehicleToSave); // Capture the returned document reference
+      setVehicleSavedID(docRef.id); // Extract the document ID
+      
+        
       }
       resetForm(); // Reset form after save
     } catch (error) {
@@ -135,6 +144,7 @@ export default function Admin() {
     setIsEditing(true); // Set isEditing to true when editing
   };
 
+  
   const handleDeleteVehicle = async (id) => {
     await deleteVehicle(id);
   };
@@ -216,7 +226,7 @@ export default function Admin() {
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         {/* CRUD components for Unidades */}
-        <TransportUnitForm existingVehicle={editingVehicle} vehicle={vehicle} setVehicle={setVehicle} onSave={handleSaveVehicle} isEditing={isEditing} />
+        <TransportUnitForm existingVehicle={editingVehicle} vehicle={vehicle} setVehicle={setVehicle} ImgURLconst={vehicleSavedID} onSave={handleSaveVehicle} isEditing={isEditing} />
         <TransportUnitList vehicles={vehicles} onEdit={handleEditVehicle} onDelete={handleDeleteVehicle} />
       </CustomTabPanel>
     </Box>
