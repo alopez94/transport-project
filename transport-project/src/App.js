@@ -1,8 +1,7 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
-import { projectAuthentication, projectFirestore } from "./firebase/config";
-import { useState } from "react";
+
 
 //page components
 

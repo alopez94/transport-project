@@ -1,27 +1,52 @@
 import React, { useEffect, useState } from "react";
 import { projectFirestore } from "../../firebase/config";
+import Script from "react-load-script";
 
 //styles
 import "./Dashboard.css";
-import { Container } from "@mui/material";
+import { Container, colors } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
 import { CardVehicules } from "../../components/cardVehicules";
-
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 export default function Dashboard() {
-  const [value, setValue] = useState();
-
+  const [autocomplete, setAutocomplete] = useState(null);
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const [departure, setDeparture] = useState();
+  const [arrival, setArrival] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
-
   const [vehicles, setVehicles] = useState([]);
+
+  const handleScriptLoad = () => {
+    //test
+    const varAutocomplete = new window.google.maps.places.Autocomplete(
+      document.getElementById("autocomplete"),
+      { types: ["(cities)"] }
+    );
+    varAutocomplete.addListener("place_changed", handlePlaceSelect);
+    setAutocomplete(varAutocomplete);
+    console.log("Script loaded, initializing autocomplete...");
+    console.log("autocomplete :>> ", autocomplete);
+  };
+
+  const handlePlaceSelect = () => {
+    const addressObject = autocomplete.getPlace();
+    const address = addressObject.address_components;
+    if (address) {
+      // Handle the selected place details
+      console.log(address);
+    }
+  };
+
+  const loadModalData = () => {};
 
   const useFirestoreCollection = (collectionName, setData) => {
     useEffect(() => {
@@ -46,8 +71,6 @@ export default function Dashboard() {
   };
 
   useFirestoreCollection("vehicles", setVehicles);
-  
-  //brand, info, maxweight, rentbaseprice, type, image
 
   return (
     <div>
@@ -57,57 +80,61 @@ export default function Dashboard() {
             <Container className="containersection">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={["DatePicker", "DatePicker"]}>
-                  <Autocomplete
-                    disablePortal
-                    id="combo-box-demo"
-                    options=""
-                    sx={{ width: 300 }}
-                    renderInput={(params) => (
-                      <TextField {...params} label="Lugar de partida" />
-                    )}
+                  <Script
+                    url={`https://maps.googleapis.com/maps/api/js?key=AIzaSyDLtGQQEO4Meam3ns19cuf_DA4yl9gwaps&libraries=places`}
+                    onLoad={handleScriptLoad}
                   />
-                  <Autocomplete
-                    disablePortal
-                    id="combo-box-demo"
-                    options=""
-                    sx={{ width: 300 }}
-                    renderInput={(params) => (
-                      <TextField {...params} label="Destino" />
-                    )}
+
+                  <TextField
+                    id="locationstart"
+                    label="Lugar de partida"
+                    variant="outlined"
+                    value={departure}
                   />
+                  <TextField
+                    id="locationEnd"
+                    label="Destino"
+                    variant="outlined"
+                    value={arrival}
+                  />
+
                   <DatePicker
                     label="Fecha de Inicio"
-                    onChange={(newValue) => setValue(newValue)}
+                    value={startDate}
+                    onChange={(newValue) => setStartDate(newValue)}
+                    disablePast
                   />
                   <DatePicker
                     label="Fecha de Finalizacion"
-                    value={value}
-                    onChange={(newValue) => setValue(newValue)}
+                    value={endDate}
+                    onChange={(newValue) => setEndDate(newValue)}
+                    minDate={startDate}
                   />
+
+                  <Button variant="contained">Buscar</Button>
                 </DemoContainer>
               </LocalizationProvider>
             </Container>
           </Grid>
-          
-          <Container>  
+
+          <Container>
             <Grid className="cardsContainer">
               {loading && <div>Loading</div>}
               {error && <div>error.message</div>}
               {vehicles.map((vehicles) => (
-                
-                  <CardVehicules
-                    className="card"
-                    key={vehicles.id}
-                    brand={vehicles.brand}
-                    info={vehicles.info}
-                    maxweight={vehicles.maxweight}
-                    rentbaseprice={vehicles.rentbaseprice}
-                    type={vehicles.type}
-                  />
-               
+                <CardVehicules
+                  className="card"
+                  key={vehicles.id}
+                  image={vehicles.image}
+                  brand={vehicles.brand}
+                  info={vehicles.info}
+                  maxweight={vehicles.maxweight}
+                  rentbaseprice={vehicles.rentbaseprice}
+                  type={vehicles.type}
+                />
               ))}
             </Grid>
-            </Container>
+          </Container>
         </Grid>
       </Box>
     </div>

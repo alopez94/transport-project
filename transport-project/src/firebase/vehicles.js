@@ -4,8 +4,9 @@ const vehicleCollection = projectFirestore.collection('vehicles');
 
 // Add a new vehicle
 export const addVehicle = async (vehicle) => {
+
   return await vehicleCollection.add(vehicle);
- 
+  
   
 };
 

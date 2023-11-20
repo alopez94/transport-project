@@ -14,6 +14,7 @@ import {
   projectStorage,
   projectAuthentication,
 } from "../../firebase/config";
+import './transport.css'
 
 const days = [
   { name: "Lunes", value: 1 },
@@ -101,16 +102,15 @@ const TransportUnitForm = ({ existingVehicle, onSave, onReset, ImgURLconst }) =>
     const uploadPath = `transportUnit/${userID}/${uploadImage.name}`;
     const img = await projectStorage.ref(uploadPath).put(uploadImage);
     const imgURL = await img.ref.getDownloadURL();
-    setImgURLconst(imgURL);
-    console.log('vehicleSavedID :>> ', ImgURLconst);
-    await projectFirestore.collection('vehicles').doc(ImgURLconst).update({image: imgURLconst})
-    
+    console.log('vehicleSavedID in transport unit :>> ', ImgURLconst);
+    await projectFirestore.collection('vehicles').doc(ImgURLconst).update({image: imgURL})
+    console.log('imgURL :>> ', imgURL);
   }
   const isEditing = Boolean(existingVehicle);
 
   const [uploadImage, setUploadImage] = useState(null);
   const [uploadImageError, setUploadImageError] = useState(null);
-  const [imgURLconst, setImgURLconst] = useState(null);
+  
 
   const handleFileChange = (e) => {
     setUploadImage(null);
@@ -133,7 +133,7 @@ const TransportUnitForm = ({ existingVehicle, onSave, onReset, ImgURLconst }) =>
     }
     setUploadImageError(null);
     setUploadImage(selected);
-    console.log(imgURLconst);
+    
     console.log("Imagen guardada");
   };
 
@@ -246,7 +246,7 @@ const TransportUnitForm = ({ existingVehicle, onSave, onReset, ImgURLconst }) =>
               shrink: true,
             }}
           ></TextField>
-          {uploadImageError && <div>{uploadImageError}</div>}
+          {uploadImageError && <div className="err">{uploadImageError}</div>}
         </Grid>
 
         <Grid item xs={12} sm={4}>

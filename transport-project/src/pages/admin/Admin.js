@@ -123,16 +123,22 @@ export default function Admin() {
   // #region Crud Vehiculos
   const handleSaveVehicle = async (vehicleToSave) => {
     try {
+
+      let imgUrlUpdate;
+
       if (isEditing) {
         await updateVehicle(editingVehicle.id, vehicleToSave);
        
       } else {
+
       const docRef = await addVehicle(vehicleToSave); // Capture the returned document reference
-      setVehicleSavedID(docRef.id); // Extract the document ID
+      imgUrlUpdate = docRef.id
+      setVehicleSavedID(docRef.id)
       
-        
+      console.log('object :>> ', imgUrlUpdate);
+      console.log('object sent :>> ', vehicleSavedID);
       }
-      resetForm(); // Reset form after save
+      //resetForm(); // Reset form after save
     } catch (error) {
       console.error("Error saving document: ", error);
       // Handle the error accordingly
