@@ -9,15 +9,7 @@ import Button from '@mui/material/Button';
 
 
 const TransportUnitList = ({ vehicles, onEdit, onDelete }) => {
-    const getDaysAvailableNumbers = (daysAvailable) => {
-        if (!Array.isArray(daysAvailable)) {
-          // Handle the case where daysAvailable is not an array
-          // This could be a return of an empty string or a default value
-          return '';
-        }
-        // Since daysAvailable is expected to be an array of numbers, just sort and join them
-        return daysAvailable.sort((a, b) => a - b).join(', ');
-      };
+
 
   return (
     <Table>
@@ -33,7 +25,8 @@ const TransportUnitList = ({ vehicles, onEdit, onDelete }) => {
           <TableCell>Conductor Requerido</TableCell>
           <TableCell>Disponible</TableCell>
           <TableCell>Imagen</TableCell>
-          <TableCell>Días Disponibles</TableCell>
+          <TableCell>Fecha Inicio Disponibilidad</TableCell>
+          <TableCell>Fecha Finalizacion Disponibilidad</TableCell>
           <TableCell>Acciones</TableCell>
         </TableRow>
       </TableHead>
@@ -50,7 +43,8 @@ const TransportUnitList = ({ vehicles, onEdit, onDelete }) => {
             <TableCell>{vehicle.driverrequired}</TableCell>
             <TableCell>{vehicle.isAvailable ? 'Sí' : 'No'}</TableCell>
             <TableCell>{vehicle.image}</TableCell>
-            <TableCell>{getDaysAvailableNumbers(vehicle.daysAvailable)}</TableCell>
+            <TableCell>{vehicle.startDateAvailable}</TableCell>
+            <TableCell>{vehicle.endDateAvailable}</TableCell>
             <TableCell>
               <Button variant="contained" color="primary" onClick={() => onEdit(vehicle)}>
                 Editar

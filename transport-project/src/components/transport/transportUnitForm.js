@@ -5,45 +5,46 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import FormGroup from "@mui/material/FormGroup";
 import Typography from "@mui/material/Typography";
-import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
   projectFirestore,
   projectStorage,
   projectAuthentication,
 } from "../../firebase/config";
-import './transport.css'
+import "./transport.css";
 
-const days = [
-  { name: "Lunes", value: 1 },
-  { name: "Martes", value: 2 },
-  { name: "Miércoles", value: 3 },
-  { name: "Jueves", value: 4 },
-  { name: "Viernes", value: 5 },
-  { name: "Sábado", value: 6 },
-  { name: "Domingo", value: 7 },
-];
 
-const TransportUnitForm = ({ existingVehicle, onSave, onReset, ImgURLconst }) => {
+
+const TransportUnitForm = ({
+  existingVehicle,
+  onSave,
+  onReset,
+  ImgURLconst,
+}) => {
   const initialVehicleState = {
     createdBy: "",
-    brand: "",
-    type: "",
-    info: "",
+    brand: "Toyota",
+    type: "Test",
+    info: "This is informacion",
     maxweight: 1,
-    maxspeed: "",
-    transmission: "",
+    maxspeed: "80",
+    transmission: "Manual",
     rentpricebase: 100,
-    driverrequired: "",
+    driverrequired: "Si",
     image: "",
     isAvailable: false,
-    daysAvailable: [],
+    startDateAvailable: "",
+    endDateAvailable: "",
   };
 
   const [vehicle, setVehicle] = useState(initialVehicleState);
-  
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
 
   useEffect(() => {
     if (existingVehicle) {
@@ -56,6 +57,7 @@ const TransportUnitForm = ({ existingVehicle, onSave, onReset, ImgURLconst }) =>
   };
 
   const isFormValid = () => {
+    
     return (
       vehicle.brand &&
       vehicle.type &&
@@ -63,59 +65,54 @@ const TransportUnitForm = ({ existingVehicle, onSave, onReset, ImgURLconst }) =>
       vehicle.driverrequired &&
       Number.isInteger(parseInt(vehicle.maxweight)) &&
       Number.isInteger(parseInt(vehicle.maxspeed)) &&
-      Number.isInteger(parseInt(vehicle.rentpricebase)) &&
-      vehicle.daysAvailable.length > 0
+      Number.isInteger(parseInt(vehicle.rentpricebase)) 
+      
     );
   };
 
-  const handleChange = (e) => {
-    
-    const { name, value, checked, type } = e.target;
+  const handleChange = (eventOrCustomObject) => {
+    const { name, value, checked, type } = eventOrCustomObject.target || eventOrCustomObject
     if (type === "checkbox") {
-      setVehicle({ ...vehicle, [name]: checked, }); // Use boolean for checkbox
-    } else {
+      setVehicle({ ...vehicle, [name]: checked });
+    } 
+    else {
       setVehicle({ ...vehicle, [name]: value });
+      
     }
+
+        
   };
 
- 
   const handleSubmit = (e) => {
-    e.preventDefault();    
-    onSave(vehicle)    
-    saveImageStorage()
+    e.preventDefault();
+    console.log('vehicle :>> ', vehicle);
+    onSave(vehicle);
+    saveImageStorage();
     resetForm();
   };
 
-  const handleCheckboxChange = (value) => {
-    setVehicle((prevVehicle) => {
-      const daysAvailable = prevVehicle.daysAvailable.includes(value)
-        ? prevVehicle.daysAvailable.filter((day) => day !== value) // Remove the day
-        : [...prevVehicle.daysAvailable, value]; // Add the day
-
-      return { ...prevVehicle, daysAvailable };
-    });
-  };
-
- 
   const saveImageStorage = async () => {
+
     const userID = await projectAuthentication.currentUser.uid;
     const uploadPath = `transportUnit/${userID}/${uploadImage.name}`;
     const img = await projectStorage.ref(uploadPath).put(uploadImage);
     const imgURL = await img.ref.getDownloadURL();
-    console.log('vehicleSavedID in transport unit :>> ', ImgURLconst);
-    await projectFirestore.collection('vehicles').doc(ImgURLconst).update({image: imgURL})
-    console.log('imgURL :>> ', imgURL);
-  }
+    console.log("vehicleSavedID in transport unit :>> ", ImgURLconst);
+    await projectFirestore
+      .collection("vehicles")
+      .doc(await ImgURLconst)
+      .update({ image: imgURL });
+    console.log("imgURL :>> ", imgURL);
+  };
   const isEditing = Boolean(existingVehicle);
 
   const [uploadImage, setUploadImage] = useState(null);
   const [uploadImageError, setUploadImageError] = useState(null);
-  
 
   const handleFileChange = (e) => {
     setUploadImage(null);
     let selected = e.target.files[0];
-    
+
     if (!selected) {
       setUploadImageError("Asegurese de seleccionar una image");
       console.log("validacion 1 :>> ");
@@ -133,7 +130,7 @@ const TransportUnitForm = ({ existingVehicle, onSave, onReset, ImgURLconst }) =>
     }
     setUploadImageError(null);
     setUploadImage(selected);
-    
+
     console.log("Imagen guardada");
   };
 
@@ -227,13 +224,17 @@ const TransportUnitForm = ({ existingVehicle, onSave, onReset, ImgURLconst }) =>
         </Grid>
         <Grid item xs={12} sm={4}>
           <TextField
+            select
             required
             fullWidth
             name="driverrequired"
-            label="Conductor Requerido"
+            label="Necesita conductor"
             value={vehicle.driverrequired}
             onChange={handleChange}
-          />
+          >
+            <MenuItem value="Si">Si</MenuItem>
+            <MenuItem value="No">No</MenuItem>
+          </TextField>
         </Grid>
         <Grid item xs={12} sm={4}>
           <TextField
@@ -265,22 +266,34 @@ const TransportUnitForm = ({ existingVehicle, onSave, onReset, ImgURLconst }) =>
 
         <Grid item xs={12}>
           <Typography variant="subtitle1" gutterBottom>
-            Días Disponibles
+            Fechas Disponibles
           </Typography>
-          <FormGroup row>
-            {days.map((day) => (
-              <FormControlLabel
-                key={day.value}
-                control={
-                  <Checkbox
-                    checked={vehicle.daysAvailable.includes(day.value)}
-                    onChange={() => handleCheckboxChange(day.value)}
-                  />
-                }
-                label={day.name}
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={["DatePicker", "DatePicker"]}>
+              <DatePicker
+              name="startDate"
+                label="Fecha de Inicio"
+                value={startDate}
+                onChange={(newValue) => {
+                  const formattedDate = newValue ? newValue.toISOString().split('T')[0] : '';
+                  handleChange({ name: 'startDateAvailable', value: formattedDate }, setStartDate(newValue));
+                }}
+                disablePast
+                
               />
-            ))}
-          </FormGroup>
+              <DatePicker
+              name="endDate"
+                label="Fecha de Finalizacion"
+                value={endDate}
+                disablePast
+                minDate={startDate}
+                onChange={(newValue) => {
+                  const formattedDate = newValue ? newValue.toISOString().split('T')[0] : '';
+                  handleChange({ name: 'endDateAvailable', value: formattedDate });
+                }}
+              />
+            </DemoContainer>
+          </LocalizationProvider>
         </Grid>
         {/* Add Grid item for FormGroup if needed */}
         <Grid item xs={12}>

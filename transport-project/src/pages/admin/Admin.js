@@ -70,7 +70,8 @@ export default function Admin() {
     driverrequired: '',
     image: '',
     isAvailable: false,
-    daysAvailable: []
+    startDateAvailable: "",
+    endDateAvailable: "",
   };
   const initialDriverState = {
     name: '',
@@ -122,9 +123,7 @@ export default function Admin() {
 
   // #region Crud Vehiculos
   const handleSaveVehicle = async (vehicleToSave) => {
-    try {
-
-      let imgUrlUpdate;
+    try {     
 
       if (isEditing) {
         await updateVehicle(editingVehicle.id, vehicleToSave);
@@ -132,7 +131,7 @@ export default function Admin() {
       } else {
 
       const docRef = await addVehicle(vehicleToSave); // Capture the returned document reference
-      imgUrlUpdate = docRef.id
+      const imgUrlUpdate = docRef.id
       setVehicleSavedID(docRef.id)
       
       console.log('object :>> ', imgUrlUpdate);

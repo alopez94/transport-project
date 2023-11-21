@@ -1,6 +1,6 @@
 import "./cardVehicule.css"
 
-import React from 'react'
+import React, { useState } from 'react'
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -9,8 +9,10 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 
-export function CardVehicules({id,image, brand, info, maxweight, rentbaseprice, type}) {
+export function CardVehicules({id,image, brand, info, maxweight, rentbaseprice, type, onSelect, isOnModal}) {
   
+  
+
   return (
     <Card sx={{ maxWidth: 345 }}>
     <CardMedia
@@ -21,6 +23,7 @@ export function CardVehicules({id,image, brand, info, maxweight, rentbaseprice, 
     />
     <CardContent>
       <Typography gutterBottom variant="h5" component="div">
+        
         {brand}
       </Typography>
       <Typography variant="body2" color="text.secondary">
@@ -34,10 +37,10 @@ export function CardVehicules({id,image, brand, info, maxweight, rentbaseprice, 
         
       </Typography>
     </CardContent>      
-    <CardActions>
-      <Button size="small">Alquilar</Button>
+    {!isOnModal && <CardActions>
+      <Button onClick={onSelect} size="small">Seleccionar</Button>
      
-    </CardActions>
+    </CardActions>}
   </Card>
   )
 }

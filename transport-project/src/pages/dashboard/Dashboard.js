@@ -14,6 +14,8 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { CardVehicules } from "../../components/cardVehicules";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
 
 export default function Dashboard() {
   const [autocomplete, setAutocomplete] = useState(null);
@@ -24,6 +26,48 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
   const [vehicles, setVehicles] = useState([]);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const style = {
+    position: "fixed",
+    top: "40%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "70%",
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+    padding: "5%"
+  };
+
+  const initialLoadState = {
+    createdby: '',
+    startDate: '',
+    endDate: '',
+    departure: '',
+    destination: '',
+    vehicle: '',
+    status: ''
+  }
+
+  const initialQuoteState = {
+    createdby: '',
+    startDate: '',
+    endDate: '',
+    departure: '',
+    destination: '',
+    vehicle: '',
+    status: ''
+  }
+
+  const [createdload, setCreatedLoad] = useState(initialLoadState)
+  const [createdQuote, setCreatedQuote] = useState(initialQuoteState)
+
+  const [selectedCard, setSelectedCard] = useState(null);
+
 
   const handleScriptLoad = () => {
     //test
@@ -46,7 +90,22 @@ export default function Dashboard() {
     }
   };
 
-  const loadModalData = () => {};
+ 
+  
+  const hancleClick = () => {
+    //aqui va el filtro
+  }
+
+  useEffect(() => {
+    console.log('selectedCard updated: ', selectedCard);
+}, [selectedCard]);
+
+  const handleSelectCard = (item) => {
+       
+    setSelectedCard(item)
+    handleOpen()
+    
+};
 
   const useFirestoreCollection = (collectionName, setData) => {
     useEffect(() => {
@@ -106,12 +165,13 @@ export default function Dashboard() {
                   />
                   <DatePicker
                     label="Fecha de Finalizacion"
+                    defaultValue={startDate}
                     value={endDate}
                     onChange={(newValue) => setEndDate(newValue)}
                     minDate={startDate}
                   />
 
-                  <Button variant="contained">Buscar</Button>
+                  <Button variant="contained" onClick={hancleClick}>Buscar</Button>
                 </DemoContainer>
               </LocalizationProvider>
             </Container>
@@ -121,22 +181,52 @@ export default function Dashboard() {
             <Grid className="cardsContainer">
               {loading && <div>Loading</div>}
               {error && <div>error.message</div>}
-              {vehicles.map((vehicles) => (
+              {vehicles.map((vehicle) => (
                 <CardVehicules
                   className="card"
-                  key={vehicles.id}
-                  image={vehicles.image}
-                  brand={vehicles.brand}
-                  info={vehicles.info}
-                  maxweight={vehicles.maxweight}
-                  rentbaseprice={vehicles.rentbaseprice}
-                  type={vehicles.type}
-                />
+                  key={vehicle.id}
+                  image={vehicle.image}
+                  brand={vehicle.brand}
+                  info={vehicle.info}
+                  maxweight={vehicle.maxweight}
+                  rentbaseprice={vehicle.rentbaseprice}
+                  type={vehicle.type}
+                  onSelect={() => handleSelectCard(vehicle)}                                 
+                />                
               ))}
             </Grid>
           </Container>
         </Grid>
       </Box>
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        
+        <Box sx={style}>
+          {selectedCard  ? (<div>
+                  
+            <CardVehicules
+                  className="card"
+                  image={selectedCard.image}
+                  brand={selectedCard.brand}
+                  info={selectedCard.info}
+                  maxweight={selectedCard.maxweight}
+                  rentbaseprice={selectedCard.rentbaseprice}
+                  type={selectedCard.type}
+                  isOnModal = {true}                      
+                /> 
+             
+          </div>) : (
+            <Typography variant="body1">No vehicle selected</Typography>
+          )}
+         </Box>
+         
+      </Modal>
+
     </div>
   );
 }

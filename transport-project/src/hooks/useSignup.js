@@ -9,7 +9,7 @@ export const useSignup = () => {
   const [isPending, setIsPending] = useState(false);
   const { dispatch } = useAuthContext();
 
-  const signup = async (name, lastName, phone, company, displayName, email, password) => {
+  const signup = async (name, lastName, phone, company, displayName, isDriver, email, password) => {
     setError(null);
     setIsPending(true);
 
@@ -35,6 +35,7 @@ export const useSignup = () => {
         phone,
         company,
         displayName,
+        isDriver,
         isAdmin: false
       })
 
