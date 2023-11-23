@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Typography from "@mui/material/Typography";
 import './Contact.css'
 
 export default function Contact() {
@@ -30,8 +31,9 @@ export default function Contact() {
       {/* Include the contact form */}
       <div className="contact-form">
         <h2>Póngase en contacto con nosotros</h2>
-        <p>Complete el formulario a la izquierda y descubra cómo podemos ayudarlo a hacer crecer su negocio.</p>
-
+        <Typography component={'span'} variant={'body2'}>
+        Complete el formulario a la izquierda y descubra cómo podemos ayudarlo a hacer crecer su negocio.
+        </Typography>
         
         <form onSubmit={handleSubmit}>
           <label>

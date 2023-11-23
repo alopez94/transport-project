@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { projectFirestore } from '../../firebase/config';
+import { projectAuthentication, projectFirestore } from '../../firebase/config';
 
 import './MyTrips.css'
 import Container from '@mui/material/Container';
 import { Box, Tabs, Tab, Typography } from '@mui/material';
 import LoadsUnitList from '../../components/loads/loadsUnitList';
 import { addLoad } from '../../firebase/Loads';
-
-
-
+import { useAuthContext } from '../../hooks/useAuthContext'
 export default function MyTrips() {
   
   const initialLoadsState = {
@@ -24,7 +22,8 @@ export default function MyTrips() {
   //states
   const [value, setValue] = useState(0);
   const [loads, setLoads] = useState([])
-  const [load, setLoad] = useState()
+
+  
   
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -32,8 +31,12 @@ export default function MyTrips() {
 
 
   const useFirestoreCollection = (collectionName, setData) => {
+    const uid = projectAuthentication.currentUser.uid
+    
     useEffect(() => {
-      const unsubscribe = projectFirestore.collection(collectionName).onSnapshot(snapshot => {
+      
+      let ref = projectFirestore.collection(collectionName)  
+      const unsubscribe = ref.onSnapshot(snapshot => {
         const data = snapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
@@ -43,11 +46,11 @@ export default function MyTrips() {
   
       // Cleanup subscription on unmount
       return () => unsubscribe();
-    }, [collectionName, setData]);
+    }, [collectionName, setData, uid]);
   };
   
   useFirestoreCollection('loads',setLoads)
-
+ 
   const handleSaveLoad = async (loadToSave) => {
     try {
       const docRef = await addLoad(loadToSave);
@@ -56,7 +59,6 @@ export default function MyTrips() {
       console.error("No se pudo guardar doc", err)
     }
   }
-
 
   
   return (

@@ -2,6 +2,7 @@
 import { NavLink } from "react-router-dom"
 import { useAuthContext } from '../hooks/useAuthContext'
 import { projectAuthentication, projectFirestore } from '../firebase/config'
+import Typography from '@mui/material/Typography';
 //styles
 import './Sidebar.css'
 import { useState } from "react"
@@ -37,9 +38,9 @@ export default function Sidebar() {
   
     <div className="sidebar">
     <div className="sidebar-content">
-      <div className="user">
+      <div className="user">        
         
-        <p>Hey {user.displayName}</p>  
+        <Typography component={'span'} variant={'body2'}> {user.displayName}</Typography>
       </div>  
       <nav className="links">
         <ul>

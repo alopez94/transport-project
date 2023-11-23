@@ -25,6 +25,7 @@ const TransportUnitForm = ({
   onSave,
   onReset,
   ImgURLconst,
+  
 }) => {
   const initialVehicleState = {
     createdBy: "",
@@ -46,11 +47,17 @@ const TransportUnitForm = ({
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
 
+  
+
   useEffect(() => {
+   
     if (existingVehicle) {
       setVehicle(existingVehicle);
     }
+
   }, [existingVehicle]);
+
+  
 
   const resetForm = () => {
     setVehicle(initialVehicleState);
@@ -86,9 +93,10 @@ const TransportUnitForm = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('vehicle :>> ', vehicle);
-    onSave(vehicle);
-    saveImageStorage();
+    onSave(vehicle);    
     resetForm();
+    saveImageStorage()
+   
   };
 
   const saveImageStorage = async () => {
@@ -97,13 +105,19 @@ const TransportUnitForm = ({
     const uploadPath = `transportUnit/${userID}/${uploadImage.name}`;
     const img = await projectStorage.ref(uploadPath).put(uploadImage);
     const imgURL = await img.ref.getDownloadURL();
+    
     console.log("vehicleSavedID in transport unit :>> ", ImgURLconst);
-    await projectFirestore
+    
+    if(ImgURLconst){
+      await projectFirestore
       .collection("vehicles")
-      .doc(await ImgURLconst)
+      .doc(ImgURLconst)
       .update({ image: imgURL });
     console.log("imgURL :>> ", imgURL);
+  }
   };
+
+  
   const isEditing = Boolean(existingVehicle);
 
   const [uploadImage, setUploadImage] = useState(null);

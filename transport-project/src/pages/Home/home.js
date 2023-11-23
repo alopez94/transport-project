@@ -58,18 +58,18 @@ export default function Home() {
         <Slideshow images={images} interval={3000} />
         {/* Centered white bold letters over the slideshow */}
         <div className="slogan-overlay">
-          <p className="slogan-text">¡Rápido, Confiable, y Sin Estrés! </p>
+          <Typography component={'span'} className="slogan-text">¡Rápido, Confiable, y Sin Estrés! </Typography>
         </div>
       </div>
 
       {/* Include the description of the webpage */}
       <div className="webpage-description">
         <h2>Bienvenido a Swift Moves!</h2>
-        <p>
+        <Typography component={'span'} variant={'body2'}>
           Encuentre la solución perfecta para su tus transportes con nuestras
           opciones de alquiler de camiones y servicios de conductores
           profesionales.
-        </p>
+          </Typography>
 
         <Button onClick={handleOpen} variant="contained" color="success">
           Cotiza con nosotros!
@@ -79,10 +79,10 @@ export default function Home() {
       {/* Include the second description without a card */}
       <div className="second-description">
         <h2>Su carga comienza con Swift Moves.</h2>
-        <p>
+        <Typography component={'span'} variant={'body2'}>
           Explore soluciones eficientes para su carga con solo un clic de
           distancia.
-        </p>
+          </Typography>
         <button
           className="green-button"
           onClick={() => (window.location.href = "/contact")}
@@ -105,11 +105,11 @@ export default function Home() {
           <Typography variant="h2" component="h2">
             Ingresa tu informacion y cotiza con nosotros
           </Typography>
-          <Typography variant="body1" component="h2">
-          <p>
+          <Typography component={'span'} variant={'body2'}>
+          
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sapien nulla, scelerisque non viverra eu, convallis quis erat. Quisque auctor.
           
-          </p>
+          
           </Typography>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer components={["DatePicker", "DatePicker"]}>

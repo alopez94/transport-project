@@ -27,7 +27,7 @@ const LoadsUnitList = ({ loads, onEdit, onDelete }) => {
             <TableCell> {load.endDate} </TableCell>
             <TableCell> {load.departure} </TableCell>
             <TableCell> {load.destination} </TableCell>
-            <TableCell> {load.vehicle} </TableCell>
+            <TableCell> {load.vehicle.brand} </TableCell>
             <TableCell> {load.status} </TableCell>
             <TableCell>
               

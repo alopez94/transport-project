@@ -1,46 +1,37 @@
-import "./cardVehicule.css"
+import "./cardVehicule.css";
 
-import React, { useState } from 'react'
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import React, { useState } from "react";
 
+//mui
 
-export function CardVehicules({id,image, brand, info, maxweight, rentbaseprice, type, onSelect, isOnModal}) {
-  
-  
+import CardActions from "@mui/material/CardActions";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
 
+//components
+import CardStruct from "./cards/cardStruct";
+
+export function CardVehicules({ vehicles, onSelect }) {
   return (
-    <Card sx={{ maxWidth: 345 }}>
-    <CardMedia
-      component="img"
-      alt=""
-      height="140"
-      image={image}
-    />
-    <CardContent>
-      <Typography gutterBottom variant="h5" component="div">
-        
-        {brand}
-      </Typography>
-      <Typography variant="body2" color="text.secondary">
-        {info}
-      </Typography>
-      <Typography variant="body2" color="text.secondary">
-       <p className="details"> Peso Maximo: {maxweight}</p>
-       <p className="details">Typo de Vehiculo:{type}</p>
-       <p className="details"> Precio de Renta Diario: {rentbaseprice}</p>
-        
-        
-      </Typography>
-    </CardContent>      
-    {!isOnModal && <CardActions>
-      <Button onClick={onSelect} size="small">Seleccionar</Button>
-     
-    </CardActions>}
-  </Card>
-  )
+    <Grid container spacing={3}>
+      {vehicles.map((vehicle) => (
+        <Grid item xs={4} key={vehicle.id}>       
+          <CardStruct 
+          image={vehicle.image} 
+          brand={vehicle.brand}
+          info={vehicle.info}
+          maxweight={vehicle.maxweight}
+          type={vehicle.type}
+          rentpricebase={vehicle.rentpricebase}
+          />
+            <CardActions>
+              <Button onClick={() => onSelect(vehicle)} size="small">
+                Seleccionar
+              </Button>
+            </CardActions>
+          
+        </Grid>
+      ))}
+    </Grid>
+  );
 }
