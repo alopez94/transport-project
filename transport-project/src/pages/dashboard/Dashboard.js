@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { projectAuthentication, projectFirestore } from "../../firebase/config";
 import Script from "react-load-script";
 import {
   addLoad,
@@ -7,18 +6,15 @@ import {
   getCollections,
   updateLoads,
 } from "../../firebase/Loads";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 import { useCollection } from "../../hooks/useCollection";
 
 //styles
 import "./Dashboard.css";
-import { Container, colors } from "@mui/material";
-import Box from "@mui/material/Box";
+import { Container } from "@mui/material";
+
 import Grid from "@mui/material/Grid";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { CardVehicules } from "../../components/cardVehicules";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -30,16 +26,13 @@ import ConsultsForm from "../../components/consults/consultsForm";
 import CardStruct from "../../components/cards/cardStruct";
 
 export default function Dashboard() {
+
+  const {authIsReady, user} = useAuthContext()
+
   const [autocompleteInstances, setAutocompleteInstances] = useState({});
   const [driverRequired, setDriverRequired] = useState(false);
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
-  const [departure, setDeparture] = useState();
-  const [arrival, setArrival] = useState();
-  const [loading, setLoading] = useState(true);
-  const [loadingLoad, setLoadingLoad] = useState();
+   const [loadingLoad, setLoadingLoad] = useState();
 
-  const [vehicles, setVehicles] = useState([]);
   const [createdByConst, setCreatedByConst] = useState();
   const [createdByIDConst, setCreatedByIDConst] = useState();
   const [open, setOpen] = useState(false);
@@ -126,8 +119,8 @@ export default function Dashboard() {
 
   useEffect(() => {
 
-    const name = projectAuthentication.currentUser.displayName;
-    const uid = projectAuthentication.currentUser.uid;
+    const name = user.displayName;
+    const uid = user.uid;
     setCreatedByConst(name);
     setCreatedByIDConst(uid)
     console.log("variables :>> ", selectedCard, load);
