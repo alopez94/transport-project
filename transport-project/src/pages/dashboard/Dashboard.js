@@ -24,12 +24,9 @@ import ConsultsForm from "../../components/consults/consultsForm";
 import CardStruct from "../../components/cards/cardStruct";
 
 export default function Dashboard() {
-  const { authIsReady, user } = useAuthContext();
-
-  const [autocompleteInstances, setAutocompleteInstances] = useState({});
+  const { authIsReady, user } = useAuthContext();  
   const [driverRequired, setDriverRequired] = useState(false);
   const [loadingLoad, setLoadingLoad] = useState();
-
   const [createdByConst, setCreatedByConst] = useState();
   const [createdByIDConst, setCreatedByIDConst] = useState();
   const [open, setOpen] = useState(false);
@@ -69,50 +66,6 @@ export default function Dashboard() {
   };
   const [load, setLoad] = useState(initialLoadState);
 
-  const handleScriptLoad = () => {
-    const inputFields = document.querySelectorAll(".autocomplete-input");
-
-    const instances = Array.from(inputFields).reduce((acc, input) => {
-      const autocomplete = new window.google.maps.places.Autocomplete(input, {
-        types: ["(cities)"],
-      });
-
-      autocomplete.addListener("place_changed", () =>
-        handlePlaceSelect(autocomplete)
-      );
-      acc[input.id] = autocomplete;
-      return acc;
-    }, {});
-
-    setAutocompleteInstances(instances);
-    console.log("Script loaded, initializing autocomplete instances...");
-  };
-
-  useEffect(() => {
-    // Check if the Google Maps JavaScript API script is already loaded
-    if (!window.google) {
-      // Load the Google Maps JavaScript API script with a callback
-      const script = document.createElement("script");
-      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDLtGQQEO4Meam3ns19cuf_DA4yl9gwaps&libraries=places&callback=initMap`;
-      script.async = true;
-      document.head.appendChild(script);
-
-      // Define the callback function
-      window.initMap = handleScriptLoad;
-    } else {
-      // If the API is already loaded, simply initialize the Autocomplete instances
-      handleScriptLoad();
-    }
-  }, []);
-
-  const handlePlaceSelect = (autocomplete) => {
-    const addressObject = autocomplete.getPlace();
-    const address = addressObject.address_components;
-    if (address) {
-      // Handle the selected place details
-      console.log(address);
-    }
-  };
 
   useEffect(() => {
     const name = user.displayName;

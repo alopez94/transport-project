@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 //mui
 import Box from "@mui/material/Box";
@@ -14,8 +14,8 @@ import MenuItem from "@mui/material/MenuItem";
 
 export default function ConsultsForm({ onSelect }) {
   const [consultData, setConsultData] = useState();
-
-  const handleLoadData = (e) => {
+ 
+  const handleLoadData = (e) => { 
     const { name, value } = e.target || e;
     setConsultData({ ...consultData, [name]: value });
   };
@@ -31,14 +31,17 @@ export default function ConsultsForm({ onSelect }) {
                   <TextField
                     name="departure"
                     type="text"
-                    id="autocomplete1"
-                    className="autocomplete-input"
+                    
+                    className=".autocomplete1"                   
                     label="Lugar de partida"
                     variant="outlined"
                     onChange={handleLoadData}
                   />
                   <TextField
                     name="destination"
+                    type="text"
+                      
+                    className=".autocomplete1"                
                     label="Destino"
                     variant="outlined"
                     onChange={handleLoadData}

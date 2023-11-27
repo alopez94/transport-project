@@ -90,6 +90,7 @@ export default function MyTrips() {
     console.log(selectedLoad.status)
     console.log('load.id :>> ', load.id);
    await updateLoads(selectedLoad.id, {status:selectedLoad.status})
+   handleClose()
   }
 
   return (
