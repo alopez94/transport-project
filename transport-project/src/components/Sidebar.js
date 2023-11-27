@@ -2,6 +2,7 @@
 import { NavLink } from "react-router-dom"
 import { useAuthContext } from '../hooks/useAuthContext'
 import { projectAuthentication, projectFirestore } from '../firebase/config'
+import Typography from '@mui/material/Typography';
 //styles
 import './Sidebar.css'
 import { useState } from "react"
@@ -13,6 +14,7 @@ export default function Sidebar() {
   const {authIsReady, user} = useAuthContext()
 
   const [isAdmin, setIsAdmin] = useState(false)
+  const [isDriver, setIsDriver] = useState(false)
 
   const userID = projectAuthentication.currentUser.uid;
   const userDoc = projectFirestore.collection('users').doc(userID)
@@ -20,8 +22,10 @@ export default function Sidebar() {
  userDoc.get().then((doc) =>{
   if(doc.exists){
     const userRole = doc.data().isAdmin;
+    const isDriver = doc.data().isDriver;
     console.log('userRole :>> ', userRole);
     setIsAdmin(userRole)
+    setIsDriver(isDriver)
   }
   else{
     console.log('No User');
@@ -34,9 +38,9 @@ export default function Sidebar() {
   
     <div className="sidebar">
     <div className="sidebar-content">
-      <div className="user">
+      <div className="user">        
         
-        <p>Hey {user.displayName}</p>  
+        <Typography component={'span'} variant={'body2'}> {user.displayName}</Typography>
       </div>  
       <nav className="links">
         <ul>
@@ -49,6 +53,11 @@ export default function Sidebar() {
             <NavLink exact to="/mytrips">
               <span>Mis viajes</span>
             </NavLink>
+          </li>
+          <li>
+            {isDriver && <NavLink exact to="/myvehicles">
+              <span>Mis vehiculos</span>
+            </NavLink>}
           </li>
           <li>
             <NavLink exact to="/tracking">

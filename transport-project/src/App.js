@@ -1,8 +1,7 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
-import { projectAuthentication, projectFirestore } from "./firebase/config";
-import { useState } from "react";
+
 
 //page components
 
@@ -20,6 +19,7 @@ import MyTrips from "./pages/mytrips/MyTrips";
 import Navbarlanding from "./components/navbarlanding";
 import Sidebar from "./components/Sidebar";
 import AdminRoute from "./context/AdminRoute";
+import DriverVehicles from "./pages/driverVehicles/driverVehicles";
 
 function App() {
 
@@ -45,6 +45,9 @@ function App() {
             )} />
             <Route path="/tracking" element={(
             !user ? <Navigate to="/login" /> : <Tracking />            
+            )} />
+             <Route path="/myvehicles" element={(
+            !user ? <Navigate to="/login" /> : <DriverVehicles />            
             )} />
           <Route path="/about" element={<About />            
             } />

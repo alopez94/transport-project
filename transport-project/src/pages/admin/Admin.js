@@ -1,28 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { projectFirestore } from '../../firebase/config';
-import { Box, Tabs, Tab, Typography } from '@mui/material';
-import { addVehicle, updateVehicle, deleteVehicle } from '../../firebase/vehicles';
-import TransportUnitForm from '../../components/transport/transportUnitForm';
-import TransportUnitList from '../../components/transport/transportUnitList';
-import DriverUnitForm from '../../components/drivers/DriverUnitForm';
-import DriverUnitList from '../../components/drivers/DriverUnitList';
-import { addDriver, updateDriver, deleteDriver } from '../../firebase/Drivers';
+import React, { useState, useEffect, useMemo } from "react";
+import PropTypes from "prop-types";
+import { projectFirestore } from "../../firebase/config";
+import { Box, Tabs, Tab, Typography } from "@mui/material";
+import {
+  addVehicle,
+  updateVehicle,
+  deleteVehicle,
+} from "../../firebase/vehicles";
 
-const useFirestoreCollection = (collectionName, setData) => {
-  useEffect(() => {
-    const unsubscribe = projectFirestore.collection(collectionName).onSnapshot(snapshot => {
-      const data = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setData(data);
-    });
+import { useCollection } from "../../hooks/useCollection";
+import TransportUnitForm from "../../components/transport/transportUnitForm";
+import TransportUnitList from "../../components/transport/transportUnitList";
+import DriverUnitForm from "../../components/drivers/DriverUnitForm";
+import DriverUnitList from "../../components/drivers/DriverUnitList";
+import { addDriver, updateDriver, deleteDriver } from "../../firebase/Drivers";
 
-    // Cleanup subscription on unmount
-    return () => unsubscribe();
-  }, [collectionName, setData]);
-};
+
+
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -53,61 +47,68 @@ CustomTabPanel.propTypes = {
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
   };
 }
 
 export default function Admin() {
   const initialVehicleState = {
-    brand: '',
-    type: '',
-    info: '',
+    createdby: "",
+    isActive: true,
+    brand: "",
+    type: "",
+    info: "",
     maxweight: 0,
-    maxspeed: '',
-    transmission: '',
+    maxspeed: "",
+    transmission: "",
     rentpricebase: 0,
-    driverrequired: '',
+    driverrequired: "",
+    image: "",
     isAvailable: false,
-    daysAvailable: []
+    startDateAvailable: "",
+    endDateAvailable: "",
   };
   const initialDriverState = {
-    name: '',
-    lastname: '',
-    dni: '',
-    email: '',
-    cellphone: '',
-    address: '',
+    name: "",
+    lastname: "",
+    dni: "",
+    email: "",
+    cellphone: "",
+    address: "",
     age: 0,
     isactive: true,
   };
-
+  // Use the custom hook for vehicles
+    
+  const { documents: vehicles, error: errorVehicle } = useCollection("vehicles");
+const { documents: drivers, error: errorDriver } = useCollection("drivers");
+  
   const [value, setValue] = useState(0);
-  const [vehicles, setVehicles] = useState([]); // This should hold the list of vehicles
+  const [vehiclesList, setVehiclesList] = useState([]); // This should hold the list of vehicles
   const [vehicle, setVehicle] = useState(initialVehicleState); // This should be an object
   const [editingVehicle, setEditingVehicle] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [drivers, setDrivers] = useState([]); // This should hold the list of drivers
+  const [driversList, setDriversList] = useState([]); // This should hold the list of drivers
   const [driver, setDriver] = useState(initialDriverState); // This should be an object
   const [editingdriver, setEditingDriver] = useState(null);
+  const [vehicleDocID,setVehicleDocID] = useState()
+  const [vehicleDocIdToTransporForm, setVehicleDocIdToTransporForm] = useState()
   //const [isEditing, setIsEditing] = useState(false);
 
   const resetForm = () => {
-    setVehicle(initialVehicleState);
+    setVehiclesList(initialVehicleState);
     setIsEditing(false);
     setEditingVehicle(null);
     setDriver(initialDriverState);
     setEditingDriver(null);
   };
 
+  
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  // Use the custom hook for vehicles
-  useFirestoreCollection('vehicles', setVehicles);
 
-  // Use the custom hook for drivers
-  useFirestoreCollection('drivers', setDrivers);
 
   const resetEditing = () => {
     setEditingVehicle(null);
@@ -115,15 +116,21 @@ export default function Admin() {
     setIsEditing(false); // Reset the editing state when the form is submitted or cancelled
   };
 
-  // #region Crud Vehiculos
+ 
+    // #region Crud Vehiculos
   const handleSaveVehicle = async (vehicleToSave) => {
     try {
+      
       if (isEditing) {
         await updateVehicle(editingVehicle.id, vehicleToSave);
       } else {
-        await addVehicle(vehicleToSave);
+        
+         // Capture the returned document reference
+        const refdoc = await addVehicle(vehicleToSave);
+        setVehicleDocIdToTransporForm(refdoc.id)
+                
       }
-      resetForm(); // Reset form after save
+      //resetForm(); // Reset form after save
     } catch (error) {
       console.error("Error saving document: ", error);
       // Handle the error accordingly
@@ -169,12 +176,12 @@ export default function Admin() {
 
       if (isEditing) {
         await updateDriver(editingdriver.id, driverToSave);
-        console.log(editingdriver.id)
+        console.log(editingdriver.id);
       } else {
         await addDriver(driverToSave);
       }
-      console.log(driverToSave)
-      resetForm()// Reset form after save
+      console.log(driverToSave);
+      resetForm(); // Reset form after save
     } catch (error) {
       console.error("Error saving document: ", error);
       window.alert(error.message);
@@ -192,9 +199,13 @@ export default function Admin() {
   };
   // #endregion
   return (
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+    <Box  sx={{ width: "100%" }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+        >
           <Tab label="Transportistas" {...a11yProps(0)} />
           <Tab label="Unidades" {...a11yProps(1)} />
         </Tabs>
@@ -208,16 +219,26 @@ export default function Admin() {
           onSave={handleSaveDrive}
           isEditing={isEditing}
         />
-        <DriverUnitList
+       {drivers && <DriverUnitList
           drivers={drivers}
           onEdit={handleEditDriver}
           onDelete={handleDeleteDriver}
-        />
+        />}
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
+        <CustomTabPanel value={value} index={1}>
         {/* CRUD components for Unidades */}
-        <TransportUnitForm existingVehicle={editingVehicle} vehicle={vehicle} setVehicle={setVehicle} onSave={handleSaveVehicle} isEditing={isEditing} />
-        <TransportUnitList vehicles={vehicles} onEdit={handleEditVehicle} onDelete={handleDeleteVehicle} />
+      {setVehicleDocIdToTransporForm && <TransportUnitForm 
+          existingVehicle={editingVehicle}
+          vehicle={vehicle}                      
+          onSave={handleSaveVehicle}
+          onImgURLconst={vehicleDocIdToTransporForm}
+          isEditing={isEditing}
+        />}
+       {vehicles && <TransportUnitList
+          vehicles={vehicles}
+          onEdit={handleEditVehicle}
+          onDelete={handleDeleteVehicle}
+        />}
       </CustomTabPanel>
     </Box>
   );

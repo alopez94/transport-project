@@ -34,7 +34,7 @@ export const useSignup = () => {
         lastName,
         phone,
         company,
-        displayName,
+        displayName,       
         isAdmin: false
       })
 
