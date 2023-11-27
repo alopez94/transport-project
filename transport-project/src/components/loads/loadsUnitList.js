@@ -6,7 +6,10 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import Button from "@mui/material/Button";
 
-const LoadsUnitList = ({ loads, onEdit, onDelete }) => {
+const LoadsUnitList = ({ loads, onEdit, onDelete, onSelect }) => {
+  
+  
+  
   return (
     <Table>
       <TableHead>
@@ -21,7 +24,7 @@ const LoadsUnitList = ({ loads, onEdit, onDelete }) => {
       </TableHead>
       <TableBody>
         {loads.map((load) => (
-          <TableRow key={load.id}>
+          <TableRow key={load.id} onClick={() => onSelect(load)}>
             <TableCell> {load.createdby} </TableCell>
             <TableCell> {load.startDate} </TableCell>
             <TableCell> {load.endDate} </TableCell>

@@ -7,28 +7,16 @@ import {
   updateVehicle,
   deleteVehicle,
 } from "../../firebase/vehicles";
+
+import { useCollection } from "../../hooks/useCollection";
 import TransportUnitForm from "../../components/transport/transportUnitForm";
 import TransportUnitList from "../../components/transport/transportUnitList";
 import DriverUnitForm from "../../components/drivers/DriverUnitForm";
 import DriverUnitList from "../../components/drivers/DriverUnitList";
 import { addDriver, updateDriver, deleteDriver } from "../../firebase/Drivers";
 
-const useFirestoreCollection = (collectionName, setData) => {
-  useEffect(() => {
-    const unsubscribe = projectFirestore
-      .collection(collectionName)
-      .onSnapshot((snapshot) => {
-        const data = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setData(data);
-      });
 
-    // Cleanup subscription on unmount
-    return () => unsubscribe();
-  }, [collectionName, setData]);
-};
+
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -66,6 +54,7 @@ function a11yProps(index) {
 export default function Admin() {
   const initialVehicleState = {
     createdby: "",
+    isActive: true,
     brand: "",
     type: "",
     info: "",
@@ -89,23 +78,25 @@ export default function Admin() {
     age: 0,
     isactive: true,
   };
-
-  
+  // Use the custom hook for vehicles
+    
+  const { documents: vehicles, error: errorVehicle } = useCollection("vehicles");
+const { documents: drivers, error: errorDriver } = useCollection("drivers");
   
   const [value, setValue] = useState(0);
-  const [vehicles, setVehicles] = useState([]); // This should hold the list of vehicles
+  const [vehiclesList, setVehiclesList] = useState([]); // This should hold the list of vehicles
   const [vehicle, setVehicle] = useState(initialVehicleState); // This should be an object
   const [editingVehicle, setEditingVehicle] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [drivers, setDrivers] = useState([]); // This should hold the list of drivers
+  const [driversList, setDriversList] = useState([]); // This should hold the list of drivers
   const [driver, setDriver] = useState(initialDriverState); // This should be an object
   const [editingdriver, setEditingDriver] = useState(null);
   const [vehicleDocID,setVehicleDocID] = useState()
- 
+  const [vehicleDocIdToTransporForm, setVehicleDocIdToTransporForm] = useState()
   //const [isEditing, setIsEditing] = useState(false);
 
   const resetForm = () => {
-    setVehicle(initialVehicleState);
+    setVehiclesList(initialVehicleState);
     setIsEditing(false);
     setEditingVehicle(null);
     setDriver(initialDriverState);
@@ -117,11 +108,7 @@ export default function Admin() {
     setValue(newValue);
   };
 
-  // Use the custom hook for vehicles
-  useFirestoreCollection("vehicles", setVehicles);
 
-  // Use the custom hook for drivers
-  useFirestoreCollection("drivers", setDrivers);
 
   const resetEditing = () => {
     setEditingVehicle(null);
@@ -130,11 +117,7 @@ export default function Admin() {
   };
 
  
-  useEffect(() => {
-    console.log('vehicleDocID updated:', vehicleDocID);
-  }, [vehicleDocID]);
-  
-  // #region Crud Vehiculos
+    // #region Crud Vehiculos
   const handleSaveVehicle = async (vehicleToSave) => {
     try {
       
@@ -142,11 +125,10 @@ export default function Admin() {
         await updateVehicle(editingVehicle.id, vehicleToSave);
       } else {
         
-        const docref = await addVehicle(vehicleToSave); // Capture the returned document reference
-        
-        setVehicleDocID(docref.id)  
-
-        
+         // Capture the returned document reference
+        const refdoc = await addVehicle(vehicleToSave);
+        setVehicleDocIdToTransporForm(refdoc.id)
+                
       }
       //resetForm(); // Reset form after save
     } catch (error) {
@@ -237,27 +219,26 @@ export default function Admin() {
           onSave={handleSaveDrive}
           isEditing={isEditing}
         />
-        <DriverUnitList
+       {drivers && <DriverUnitList
           drivers={drivers}
           onEdit={handleEditDriver}
           onDelete={handleDeleteDriver}
-        />
+        />}
       </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
         {/* CRUD components for Unidades */}
-      <TransportUnitForm vehicleDocID={vehicleDocID}
+      {setVehicleDocIdToTransporForm && <TransportUnitForm 
           existingVehicle={editingVehicle}
-          vehicle={vehicle}
-          setVehicle={setVehicle}               
+          vehicle={vehicle}                      
           onSave={handleSaveVehicle}
-          onImgURLconst={vehicleDocID}
+          onImgURLconst={vehicleDocIdToTransporForm}
           isEditing={isEditing}
-        />
-        <TransportUnitList
+        />}
+       {vehicles && <TransportUnitList
           vehicles={vehicles}
           onEdit={handleEditVehicle}
           onDelete={handleDeleteVehicle}
-        />
+        />}
       </CustomTabPanel>
     </Box>
   );

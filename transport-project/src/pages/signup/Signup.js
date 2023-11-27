@@ -45,20 +45,17 @@ export default function Login() {
   const [company, setCompany] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signup, isPending, error } = useSignup();
-  const [isDriver, setIsDriver] = useState(false);
+  const { signup, isPending, error } = useSignup();  
 
   const handleSubmit = (e) => {
     var displayName = name;
-    e.preventDefault();
-    console.log("isDriver :>> ", isDriver);
+    e.preventDefault();    
     signup(
       name,
       lastName,
       phone,
       company,
-      displayName,
-      isDriver,
+      displayName,      
       email,
       password
     );
@@ -137,11 +134,7 @@ export default function Login() {
                 autoFocus
                 onChange={(e) => setCompany(e.target.value)}
                 value={company}
-              />
-              <FormControlLabel
-                control={<Checkbox onChange={(e) => setIsDriver(true)} />}
-                label="Soy un conductor"
-              />
+              />            
 
               <TextField
                 margin="normal"

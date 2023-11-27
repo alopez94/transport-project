@@ -17,7 +17,7 @@ export function CardVehicules({ vehicles, onSelect }) {
       {vehicles.map((vehicle) => (
         <Grid item xs={4} key={vehicle.id}>       
           <CardStruct 
-          image={vehicle.image} 
+          image={`${vehicle.image}`} 
           brand={vehicle.brand}
           info={vehicle.info}
           maxweight={vehicle.maxweight}

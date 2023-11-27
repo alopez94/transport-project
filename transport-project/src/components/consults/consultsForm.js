@@ -10,6 +10,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { Container, colors } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
 
 export default function ConsultsForm({ onSelect }) {
   const [consultData, setConsultData] = useState();
@@ -23,57 +24,70 @@ export default function ConsultsForm({ onSelect }) {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={12}>
-          <Container className="containersection">
+          <Container >
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={["DatePicker", "DatePicker"]}>
-                <TextField
-                  name="departure"
-                  type="text"
-                  id="autocomplete1"
-                  className="autocomplete-input"
-                  label="Lugar de partida"
-                  variant="outlined"
-                  onChange={handleLoadData}
-                />
-                <TextField
-                  name="destination"
-                  label="Destino"
-                  variant="outlined"
-                  onChange={handleLoadData}
-                />
+                
+                  <TextField
+                    name="departure"
+                    type="text"
+                    id="autocomplete1"
+                    className="autocomplete-input"
+                    label="Lugar de partida"
+                    variant="outlined"
+                    onChange={handleLoadData}
+                  />
+                  <TextField
+                    name="destination"
+                    label="Destino"
+                    variant="outlined"
+                    onChange={handleLoadData}
+                  />
 
-                <DatePicker
-                  name="startDate"
-                  label="Fecha de Inicio"
-                  onChange={(newValue) => {
-                    const formattedDate = newValue
-                      ? newValue.toISOString().split("T")[0]
-                      : "";
-                    handleLoadData({
-                      name: "startDate",
-                      value: formattedDate,
-                    });
-                  }}
-                  disablePast
-                />
-                <DatePicker
-                  name="endDate"
-                  label="Fecha de Finalizacion"
-                  disablePast
-                  onChange={(newValue) => {
-                    const formattedDate = newValue
-                      ? newValue.toISOString().split("T")[0]
-                      : "";
-                    handleLoadData({ name: "endDate", value: formattedDate });
-                  }}
-                />
+                  <DatePicker
+                    name="startDate"
+                    label="Fecha de Inicio"
+                    onChange={(newValue) => {
+                      const formattedDate = newValue
+                        ? newValue.toISOString().split("T")[0]
+                        : "";
+                      handleLoadData({
+                        name: "startDate",
+                        value: formattedDate,
+                      });
+                    }}
+                    disablePast
+                  />
+                  <DatePicker
+                    name="endDate"
+                    label="Fecha de Finalizacion"
+                    disablePast
+                    onChange={(newValue) => {
+                      const formattedDate = newValue
+                        ? newValue.toISOString().split("T")[0]
+                        : "";
+                      handleLoadData({ name: "endDate", value: formattedDate });
+                    }}
+                  />
+                  <TextField
+                    select
+                    required
+                    fullWidth
+                    name="driverrequired"
+                    label="Conductor Requerido"
+                    onChange={handleLoadData}
+                  >
+                    <MenuItem value={true}>Si</MenuItem>
+                    <MenuItem value={false}>No</MenuItem>
+                  </TextField>
 
-                <Button
-                  variant="contained"
-                  onClick={() => onSelect(consultData)}
-                >
-                  Buscar
-                </Button>
+                  <Button
+                    variant="contained"
+                    onClick={() => onSelect(consultData)}
+                  >
+                    Buscar
+                  </Button>
+               
               </DemoContainer>
             </LocalizationProvider>
           </Container>

@@ -7,13 +7,11 @@ import {
   updateLoads,
 } from "../../firebase/Loads";
 import { useAuthContext } from "../../hooks/useAuthContext";
-
 import { useCollection } from "../../hooks/useCollection";
 
 //styles
 import "./Dashboard.css";
 import { Container } from "@mui/material";
-
 import Grid from "@mui/material/Grid";
 import { CardVehicules } from "../../components/cardVehicules";
 import TextField from "@mui/material/TextField";
@@ -26,12 +24,11 @@ import ConsultsForm from "../../components/consults/consultsForm";
 import CardStruct from "../../components/cards/cardStruct";
 
 export default function Dashboard() {
-
-  const {authIsReady, user} = useAuthContext()
+  const { authIsReady, user } = useAuthContext();
 
   const [autocompleteInstances, setAutocompleteInstances] = useState({});
   const [driverRequired, setDriverRequired] = useState(false);
-   const [loadingLoad, setLoadingLoad] = useState();
+  const [loadingLoad, setLoadingLoad] = useState();
 
   const [createdByConst, setCreatedByConst] = useState();
   const [createdByIDConst, setCreatedByIDConst] = useState();
@@ -118,27 +115,25 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-
     const name = user.displayName;
     const uid = user.uid;
     setCreatedByConst(name);
-    setCreatedByIDConst(uid)
+    setCreatedByIDConst(uid);
     console.log("variables :>> ", selectedCard, load);
-    const dpriceconver = load.vehicle.rentpricebase    
-    const cost = calcCost(load.startDate, load.endDate, dpriceconver)
-    setCostCalculation(cost)
-    console.log('cost on useEffect :>> ', cost);
-    setDriverRequired(load.driverrequired)
-
+    const dpriceconver = load.vehicle.rentpricebase;
+    const cost = calcCost(load.startDate, load.endDate, dpriceconver);
+    setCostCalculation(cost);
+    console.log("cost on useEffect :>> ", cost);
+    setDriverRequired(load.driverrequired);
   }, [selectedCard, load, createdByConst, costCalculation]);
 
-  const handleLoadData = (item) => {   
-    
+  const handleLoadData = (item) => {
     setLoad({
       ...load,
       createdByID: createdByIDConst,
       createdby: createdByConst,
-      driverrequired: driverRequired,
+      isActive: true,
+      driverrequired: item.driverrequired,
       departure: item.departure,
       destination: item.destination,
       startDate: item.startDate,
@@ -147,7 +142,6 @@ export default function Dashboard() {
     });
   };
 
- 
   const calcCost = (date1, date2, dailyprice) => {
     const dateA = new Date(date1);
     const dateB = new Date(date2);
@@ -170,18 +164,16 @@ export default function Dashboard() {
     if (isNaN(convertDailyPrice)) {
       console.error("daily price is not a number");
     }
-    console.log('object for calculation :>> ', dateA, dateB, convertDailyPrice);
+    console.log("object for calculation :>> ", dateA, dateB, convertDailyPrice);
     const cost = days * convertDailyPrice;
     console.log("cost", cost);
     return cost;
   };
   const handleSelectCard = (item) => {
-    
     setSelectedCard(item);
-    setCostCalculation(0)
-    handleOpen();      
-    setLoad({ ...load, vehicle: item});
-    
+    setCostCalculation(0);
+    handleOpen();
+    setLoad({ ...load, vehicle: item });
   };
 
   useEffect(() => {
@@ -200,7 +192,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      <Container fixed>
+      <Container fixed maxWidth="lg" >
         <Grid sx={{ mt: 2, mb: 2 }}>
           <ConsultsForm onSelect={handleLoadData} />
         </Grid>
@@ -252,33 +244,6 @@ export default function Dashboard() {
                 <Typography variant="subtitle1" gutterBottom>
                   El costo antes de impuesto es de L.{costCalculation}
                 </Typography>
-
-                <Typography variant="subtitle1" gutterBottom>
-                  Desea agregar un conductor a su viaje?
-                </Typography>
-
-                <TextField
-                  select
-                  required
-                  fullWidth
-                  name="isDriverRequired"
-                  label="Require Conductor"
-                  value={driverRequired}    
-                  onChange={() => setLoad({...load,cost: costCalculation})}            
-                >
-                  <MenuItem
-                    value={false}
-                    onSelect={() => setDriverRequired(false)}                    
-                  >
-                    No. Usare mi propio personal
-                  </MenuItem>
-                  <MenuItem
-                    value={true}
-                    onSelect={() => setDriverRequired(true)}
-                  >
-                    Si, deseo solicitar un transportista
-                  </MenuItem>
-                </TextField>
 
                 <Button
                   onClick={handleCreateLoad}

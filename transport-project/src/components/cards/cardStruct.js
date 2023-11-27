@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 //mui
 import Card from "@mui/material/Card";
@@ -6,8 +6,26 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import { useAuthContext } from '../../hooks/useAuthContext';
+import { projectStorage } from '../../firebase/config';
 
 export default function CardStruct({image,brand,info,maxweight,type,rentpricebase}) {
+  
+  const {user} = useAuthContext()
+  const imageRef = projectStorage.ref(`transportUnit/${image}`);
+  const [imageUrl, setImageUrl] = useState(null);
+
+  useEffect(() => {
+    // Get the download URL for the image
+    imageRef.getDownloadURL()
+      .then(url => {
+        setImageUrl(url);
+      })
+      .catch(error => {
+        console.error('Error getting download URL:', error);
+      });
+  }, [imageRef]);
+
   return (
     <div>
          <Card sx={{ maxWidth: 345 }}>
@@ -15,7 +33,7 @@ export default function CardStruct({image,brand,info,maxweight,type,rentpricebas
               component="img"
               alt=""
               height="140"
-              image={image}
+              image={imageUrl}
             />
             <CardContent>
               <Grid item xs={12}>

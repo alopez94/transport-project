@@ -17,15 +17,13 @@ import {
   projectAuthentication,
 } from "../../firebase/config";
 import "./transport.css";
-
-
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 const TransportUnitForm = ({
   existingVehicle,
   onSave,
   onReset,
   ImgURLconst,
-  
 }) => {
   const initialVehicleState = {
     createdBy: "",
@@ -46,25 +44,32 @@ const TransportUnitForm = ({
   const [vehicle, setVehicle] = useState(initialVehicleState);
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
-
-  
+  const { authIsReady, user } = useAuthContext();
+  const [uploadImage, setUploadImage] = useState(null);
+  const [uploadImageError, setUploadImageError] = useState(null);
 
   useEffect(() => {
-   
     if (existingVehicle) {
       setVehicle(existingVehicle);
     }
-
   }, [existingVehicle]);
 
+  useEffect(() => {
+    if (uploadImage) {
+      const userID = user.uid;
+      const uploadPath = `transportUnit/${uploadImage.name}`;
+    const img =  projectStorage.ref(uploadPath).put(uploadImage);
   
+
+      setVehicle({...vehicle,image: uploadImage.name})
+    }
+  }, [uploadImage]);
 
   const resetForm = () => {
     setVehicle(initialVehicleState);
   };
 
   const isFormValid = () => {
-    
     return (
       vehicle.brand &&
       vehicle.type &&
@@ -72,56 +77,39 @@ const TransportUnitForm = ({
       vehicle.driverrequired &&
       Number.isInteger(parseInt(vehicle.maxweight)) &&
       Number.isInteger(parseInt(vehicle.maxspeed)) &&
-      Number.isInteger(parseInt(vehicle.rentpricebase)) 
-      
+      Number.isInteger(parseInt(vehicle.rentpricebase))
     );
   };
 
   const handleChange = (eventOrCustomObject) => {
-    const { name, value, checked, type } = eventOrCustomObject.target || eventOrCustomObject
+    const { name, value, checked, type } =
+      eventOrCustomObject.target || eventOrCustomObject;
+
     if (type === "checkbox") {
       setVehicle({ ...vehicle, [name]: checked });
-    } 
-    else {
-      setVehicle({ ...vehicle, [name]: value });
+    } else if (type === "file") {
+
+      handleFileChange(eventOrCustomObject);
+      console.log('event :>> ', eventOrCustomObject.target);
       
+
+    } else {
+      setVehicle({ ...vehicle, [name]: value });
     }
 
-        
+    console.log('vehicle :>> ', vehicle);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('vehicle :>> ', vehicle);
-    onSave(vehicle);    
+    onSave(vehicle);
     resetForm();
-    saveImageStorage()
-   
+    saveImageStorage();
   };
 
-  const saveImageStorage = async () => {
+  const saveImageStorage = async () => {};
 
-    const userID = await projectAuthentication.currentUser.uid;
-    const uploadPath = `transportUnit/${userID}/${uploadImage.name}`;
-    const img = await projectStorage.ref(uploadPath).put(uploadImage);
-    const imgURL = await img.ref.getDownloadURL();
-    
-    console.log("vehicleSavedID in transport unit :>> ", ImgURLconst);
-    
-    if(ImgURLconst){
-      await projectFirestore
-      .collection("vehicles")
-      .doc(ImgURLconst)
-      .update({ image: imgURL });
-    console.log("imgURL :>> ", imgURL);
-  }
-  };
-
-  
   const isEditing = Boolean(existingVehicle);
-
-  const [uploadImage, setUploadImage] = useState(null);
-  const [uploadImageError, setUploadImageError] = useState(null);
 
   const handleFileChange = (e) => {
     setUploadImage(null);
@@ -255,7 +243,7 @@ const TransportUnitForm = ({
             required
             type="file"
             label="Imagen"
-            onChange={handleFileChange}
+            onChange={handleChange}
             fullWidth
             InputLabelProps={{
               shrink: true,
@@ -285,25 +273,34 @@ const TransportUnitForm = ({
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={["DatePicker", "DatePicker"]}>
               <DatePicker
-              name="startDate"
+                name="startDate"
                 label="Fecha de Inicio"
                 value={startDate}
                 onChange={(newValue) => {
-                  const formattedDate = newValue ? newValue.toISOString().split('T')[0] : '';
-                  handleChange({ name: 'startDateAvailable', value: formattedDate }, setStartDate(newValue));
+                  const formattedDate = newValue
+                    ? newValue.toISOString().split("T")[0]
+                    : "";
+                  handleChange(
+                    { name: "startDateAvailable", value: formattedDate },
+                    setStartDate(newValue)
+                  );
                 }}
                 disablePast
-                
               />
               <DatePicker
-              name="endDate"
+                name="endDate"
                 label="Fecha de Finalizacion"
                 value={endDate}
                 disablePast
                 minDate={startDate}
                 onChange={(newValue) => {
-                  const formattedDate = newValue ? newValue.toISOString().split('T')[0] : '';
-                  handleChange({ name: 'endDateAvailable', value: formattedDate });
+                  const formattedDate = newValue
+                    ? newValue.toISOString().split("T")[0]
+                    : "";
+                  handleChange({
+                    name: "endDateAvailable",
+                    value: formattedDate,
+                  });
                 }}
               />
             </DemoContainer>
