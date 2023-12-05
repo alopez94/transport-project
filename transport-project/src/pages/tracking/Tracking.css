@@ -1,0 +1,31 @@
+/* MyTrips.css */
+.trip-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.trip-table th,
+.trip-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left; /* Left align text in all cells */
+}
+
+/* Add padding between cells for visual separation */
+.trip-table th {
+  background-color: #f2f2f2;
+}
+
+/* Center text in the last cell for the buttons */
+.trip-table td:last-child {
+  text-align: center;
+}
+
+/* Style the button */
+.track-button {
+  padding: 5px 10px;
+  background-color: blue;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
