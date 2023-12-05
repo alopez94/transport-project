@@ -7,6 +7,7 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
+
 export default function Tracking() {
   const [inProgressTrips, setInProgressTrips] = useState([]);
   const mapRef = useRef(null); // Reference for the map container
@@ -55,7 +56,6 @@ export default function Tracking() {
               <th>Destino</th>
               <th>Vehiculo</th>
               <th>Estado</th>
-              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -67,11 +67,11 @@ export default function Tracking() {
                 <td>{trip.destination}</td>
                 <td>{trip.vehicle.type} - {trip.vehicle.brand}</td>
                 <td>{trip.status}</td>
-                <td>
-                  <Button className="track-button" variant="contained" color="primary" onClick={() => handleTrack(trip)}>
-                    Track
-                  </Button>
-                </td>
+                <Button className="track-button" onClick={() => handleTrack(trip)}>
+                 Track
+                </Button>
+               
+                
               </tr>
             ))}
           </tbody>
