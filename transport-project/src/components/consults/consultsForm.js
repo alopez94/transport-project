@@ -19,7 +19,7 @@ export default function ConsultsForm({ onSelect }) {
   const [departure, setDeparture] = useState(null);
   const [destination, setDestination] = useState(null);
 
-  const [selectedPlace, setSelectedPlace] = useState(null);
+
 
   const loadGoogleMapsScript = (callback) => {
     if (window.google) {
