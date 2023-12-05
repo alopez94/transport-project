@@ -22,6 +22,7 @@ export const useCollection = (collection, _query, _query2) => {
 
     if(query2) {
       ref = ref.where(...query).where(...query2)
+      
     }
    
 
