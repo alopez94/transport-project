@@ -33,10 +33,15 @@ export default function Dashboard() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const navigate = useNavigate();
-  const { documents, error } = useCollection("vehicles");
-
+  const [requestStartDate, setRequestStartDate] = useState()
+  const [requestEndDate, setRequestEndDate] = useState()
   const [selectedCard, setSelectedCard] = useState(null);
   const [costCalculation, setCostCalculation] = useState();
+  const [filteredVehicles, setFilteredVehicles] = useState([]);
+
+
+  const { documents: vehicles, error: errorVehicles } = useCollection("vehicles");
+
 
   const style = {
     position: "fixed",
@@ -80,7 +85,12 @@ export default function Dashboard() {
     setDriverRequired(load.driverrequired);
   }, [selectedCard, load, createdByConst, costCalculation]);
 
-  const handleLoadData = (item) => {
+  const handleLoadData = (item) => {  
+    
+    setRequestStartDate(item.startDate)
+    setRequestEndDate(item.endDate)
+    
+
     setLoad({
       ...load,
       createdByID: createdByIDConst,
@@ -136,12 +146,38 @@ export default function Dashboard() {
     }, delay);
   }, []);
 
+  useEffect(() => {
+    if (vehicles) {
+      const filtered = filterVehiclesByDate(vehicles, requestStartDate, requestEndDate);
+      setFilteredVehicles(filtered);
+     
+    }
+    
+  }, [vehicles, requestStartDate, requestEndDate]);
+
   const handleCreateLoad = async (loaditem) => {
     loaditem = load;
     await addLoad(loaditem);
     handleClose();
     navigate("/mytrips");
   };
+
+ 
+  const filterVehiclesByDate = (vehicles, startDate, endDate) => {
+    if (!startDate || !endDate) return vehicles; 
+
+    const startCriteria = new Date(startDate)
+    const endCriteria = new Date(endDate)
+
+    return vehicles.filter(vehicle => {
+      const startAvailable = new Date(vehicle.startDateAvailable)
+      const endAvailable = new Date(vehicle.endDateAvailable)      
+      
+      return startAvailable <= endCriteria && endAvailable >= startCriteria;
+    });
+  };
+    
+
 
   return (
     <div>
@@ -151,10 +187,10 @@ export default function Dashboard() {
         </Grid>
 
         <Grid sx={{ mt: 2, mb: 2 }}>
-          {!documents && <div>Loading</div>}
-          {error && <div>error.message</div>}
-          {documents && (
-            <CardVehicules vehicles={documents} onSelect={handleSelectCard} />
+          {!vehicles && <div>Loading...</div>}
+          {!vehicles && <div>errorVehicles.message</div>}
+          {filteredVehicles  && (
+            <CardVehicules vehicles={filteredVehicles } onSelect={handleSelectCard} />
           )}
         </Grid>
       </Container>

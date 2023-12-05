@@ -15,6 +15,7 @@ import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import "./Home.css";
+import ConsultsForm from "../../components/consults/consultsForm";
 
 const style = {
   position: "fixed",
@@ -32,10 +33,7 @@ const style = {
 export default function Home() {
   //states
   const [open, setOpen] = React.useState(false);
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
-  const [departure, setDeparture] = useState();
-  const [arrival, setArrival] = useState();
+
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -111,41 +109,9 @@ export default function Home() {
           
           
           </Typography>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DemoContainer components={["DatePicker", "DatePicker"]}>
-            <TextField
-              id="locationstart"
-              label="Lugar de partida"
-              variant="outlined"
-              value={departure}
-            />
-            <TextField
-              id="locationEnd"
-              label="Destino"
-              variant="outlined"
-              value={arrival}
-            />
 
-            <DatePicker
-              label="Fecha de Inicio"
-              value={startDate}
-              onChange={(newValue) => setStartDate(newValue)}
-              disablePast
-            />
-            <DatePicker
-              label="Fecha de Finalizacion"
-              defaultValue={startDate}
-              value={endDate}
-              onChange={(newValue) => setEndDate(newValue)}
-              minDate={startDate}
-            />
-          <NavLink exact to="/signup">
-            <Button variant="contained">
-              Buscar
-            </Button>
-            </NavLink>
-          </DemoContainer>
-          </LocalizationProvider>
+          <ConsultsForm />
+         
         </Box>
       </Modal>
     </div>
